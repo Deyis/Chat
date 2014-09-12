@@ -1,5 +1,7 @@
 package com.hifive.chat.controller;
 
+import com.hifive.chat.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -7,6 +9,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class HomeController {
+
+    @Autowired
+    private UserRepository userRepository;
 
 //  http://localhost:8000/HelloChat/
     @RequestMapping(value = "/", method = RequestMethod.GET)
@@ -19,7 +24,7 @@ public class HomeController {
     @RequestMapping(value = "/hello", method = RequestMethod.GET)
     @ResponseBody
     public HelloResponse sayHello() {
-        return new HelloResponse("Hello World!!!");
+        return new HelloResponse("Hello " + userRepository.getUserById(new Long(1)).getUserName() + "!!!");
     }
 
     private class HelloResponse {
