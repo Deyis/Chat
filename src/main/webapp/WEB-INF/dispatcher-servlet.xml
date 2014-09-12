@@ -12,9 +12,45 @@
     <context:component-scan base-package="com.hifive.chat" />
     <mvc:resources mapping="/resources/**" location="/resources/" />
 
-    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="prefix" value="/jsp/"/>
-        <property name="suffix" value=".jsp"/>
+    <bean id="contentNegotiatingViewResolver"
+          class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+        <property name="contentNegotiationManager" ref="cnManager"/>
+        <property name="order"
+                  value="#{T(org.springframework.core.Ordered).HIGHEST_PRECEDENCE}"/>
+        <property name="viewResolvers">
+            <list>
+                <!-- Default viewClass: JSTL view (JSP with html output) -->
+                <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+                    <property name="prefix" value="/jsp/"/>
+                    <property name="suffix" value=".jsp"/>
+                </bean>
+
+                <!-- Used here for 'xml' and 'atom' views  -->
+                <bean class="org.springframework.web.servlet.view.BeanNameViewResolver"/>
+            </list>
+        </property>
+        <property name="defaultViews">
+            <list>
+                <!-- To receive json answer we need to add ".json" to the end of request -->
+                <!-- Example http://localhost:8000/HelloChat/hello.json -->
+                <bean class="org.springframework.web.servlet.view.json.MappingJackson2JsonView"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="cnManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+        <property name="favorPathExtension" value="true"/>
+        <property name="ignoreAcceptHeader" value="true"/>
+        <property name="defaultContentType" value="text/html"/>
+
+        <property name="mediaTypes">
+            <map>
+                <entry key="json" value="application/json"/>
+                <entry key="html" value="text/html"/>
+                <entry key="xml" value="application/xml"/>
+                <entry key="atom" value="application/atom+xml"/>
+            </map>
+        </property>
     </bean>
 
 </beans>
