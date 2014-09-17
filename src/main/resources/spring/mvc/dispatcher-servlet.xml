@@ -9,7 +9,10 @@
 
 
     <mvc:annotation-driven />
-    <context:component-scan base-package="com.hifive.chat" />
+    <context:component-scan base-package="com.hifive" />
+
+    <import resource="classpath:/security/security-context.xml"/>
+
     <mvc:resources mapping="/resources/**" location="/resources/" />
 
     <bean id="contentNegotiatingViewResolver"

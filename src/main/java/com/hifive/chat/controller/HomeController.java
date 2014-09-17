@@ -2,6 +2,7 @@ package com.hifive.chat.controller;
 
 import com.hifive.chat.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -14,6 +15,7 @@ public class HomeController {
     private UserRepository userRepository;
 
 //  http://localhost:8000/HelloChat/
+    @Secured("ROLE_ADMIN")
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String home() {
         return "index";
@@ -21,6 +23,7 @@ public class HomeController {
 
 
 //  http://localhost:8000/HelloChat/hello.json
+    @Secured("ROLE_ADMIN")
     @RequestMapping(value = "/hello", method = RequestMethod.GET)
     @ResponseBody
     public HelloResponse sayHello() {
