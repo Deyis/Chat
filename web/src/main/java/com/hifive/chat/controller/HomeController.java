@@ -1,8 +1,10 @@
 package com.hifive.chat.controller;
 
-import com.hifive.chat.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import com.hifive.security.model.User;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -10,9 +12,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class HomeController {
-
-    @Autowired
-    private UserRepository userRepository;
 
 //  http://localhost:8000/HelloChat/
     @Secured("ROLE_ADMIN")
@@ -27,7 +26,7 @@ public class HomeController {
     @RequestMapping(value = "/hello", method = RequestMethod.GET)
     @ResponseBody
     public HelloResponse sayHello() {
-        return new HelloResponse("Hello " + userRepository.getUserById(new Long(1)).getUserName() + "!!!");
+        return new HelloResponse("Hello, " + ((User)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() + "!!!");
     }
 
     private class HelloResponse {

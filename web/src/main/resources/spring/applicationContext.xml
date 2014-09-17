@@ -22,7 +22,7 @@
                   p:database="${jpa.database}" p:showSql="${jpa.showSql}" />
         </property>
         <property name="persistenceUnitName" value="chat"/>
-        <property name="packagesToScan" value="com.hifive.chat"/>
+        <property name="packagesToScan" value="com.hifive"/>
     </bean>
 
 

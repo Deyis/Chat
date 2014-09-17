@@ -14,14 +14,7 @@
     <security:global-method-security secured-annotations="enabled"/>
 
     <security:authentication-manager>
-        <security:authentication-provider>
-            <security:user-service>
-                <security:user authorities="ROLE_ADMIN" name="admin"
-                               password="admin" />
-                <security:user authorities="ROLE_REGULAR_USER" name="user"
-                               password="user" />
-            </security:user-service>
-        </security:authentication-provider>
+        <security:authentication-provider user-service-ref="userAuthService"/>
     </security:authentication-manager>
 
     <security:http auto-config="true"/>
