@@ -27,6 +27,8 @@
 
 
     <jdbc:embedded-database id="dataSource" type="HSQL">
+        <jdbc:script location="${jdbc.initSecuritySchema}"/>
+        <jdbc:script location="${jdbc.populateSecurityData}"/>
         <jdbc:script location="${jdbc.initLocation}"/>
         <jdbc:script location="${jdbc.dataLocation}"/>
     </jdbc:embedded-database>
