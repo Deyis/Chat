@@ -26,7 +26,9 @@ public class HomeController {
     @RequestMapping(value = "/hello", method = RequestMethod.GET)
     @ResponseBody
     public HelloResponse sayHello() {
-        return new HelloResponse("Hello, " + ((User)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername() + "!!!");
+        User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        TODO add password encryption
+        return new HelloResponse("Hello, " + user.getUsername() + "!!!, Your password is: " + user.getPassword());
     }
 
     private class HelloResponse {
