@@ -17,7 +17,7 @@ public class HomeController {
 //    @Secured("ROLE_ADMIN")
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String home() {
-        return "index";
+        return "/static/index.html";
     }
 
 

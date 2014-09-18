@@ -14,6 +14,7 @@
     <import resource="classpath:/security/security-context.xml"/>
 
     <mvc:resources mapping="/resources/**" location="/resources/" />
+    <mvc:resources mapping="/static/**" location="/static/" />
 
     <bean id="contentNegotiatingViewResolver"
           class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
@@ -24,8 +25,8 @@
             <list>
                 <!-- Default viewClass: JSTL view (JSP with html output) -->
                 <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-                    <property name="prefix" value="/jsp/"/>
-                    <property name="suffix" value=".jsp"/>
+                    <!--<property name="prefix" value="/jsp/"/>-->
+                    <!--<property name="suffix" value=""/>-->
                 </bean>
 
                 <!-- Used here for 'xml' and 'atom' views  -->
