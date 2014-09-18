@@ -17,5 +17,14 @@
         <security:authentication-provider user-service-ref="userAuthService"/>
     </security:authentication-manager>
 
-    <security:http auto-config="true"/>
+    <security:http auto-config="true" use-expressions="true" entry-point-ref="restAuthenticationEntryPoint">
+
+        <security:form-login
+                login-processing-url="/login"
+                password-parameter="password"
+                username-parameter="login"
+                authentication-success-handler-ref="successHandler"
+                authentication-failure-handler-ref="failureHandler"/>
+
+    </security:http>
 </beans>

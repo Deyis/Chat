@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class HomeController {
 
 //  http://localhost:8000/HelloChat/
-    @Secured("ROLE_ADMIN")
+//    @Secured("ROLE_ADMIN")
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String home() {
         return "index";
