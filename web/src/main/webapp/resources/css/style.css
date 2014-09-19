@@ -8,8 +8,22 @@
     display: block;
 }
 
+.popup {
+    position: absolute;
+    width:100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    top:0;
+    left:0;
+}
+
 .login-container {
-    width: 400px;
+    margin: 15% auto;
+    width: 330px;
+}
+
+.new-account {
+    color: grey;
 }
 
 .form-signin
@@ -63,7 +77,7 @@
 }
 .login-title
 {
-    color: #555;
+    color: grey;
     font-size: 18px;
     font-weight: 400;
     display: block;
