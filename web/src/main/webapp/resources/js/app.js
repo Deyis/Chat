@@ -14,7 +14,7 @@
         return {
             restrict: 'E',
             templateUrl: './static/login-form.html',
-            controller:  ['$http', function($http) {
+            controller: function($http, $rootScope, $scope) {
 
                 $http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
 
@@ -22,7 +22,7 @@
                 this.loginData = {};
 
                 this.hideLoginForm = function() {
-                    this.signed = true;
+                    this.signed = true;                    
                 }
 
                 this.showLoginForm = function() {
@@ -35,15 +35,41 @@
                     $http.post('./login', Object.toparams(this.loginData))
                     .success(function(data){
                         cntrl.hideLoginForm();
+						$rootScope.$emit('LoggedIn', 'denis');
                     });
                 }
-            }],
+            },
             controllerAs: 'loginController'
         };
     });
 
+    app.directive('greeting', function(){
+        return {
+            restrict: 'E',
+            templateUrl: './static/greeting.html',
+            controller:  function($http, $rootScope, $scope) {		
 
-    app.controller('HelloController', function(){
+                $http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
 
+                this.hidden = true;
+                this.greeting = "";
+				var cntrl = this;				
+				
+				this.getGreeting= function() {
+				    $http.get('./hello.json').success(function(msg) {
+				        cntrl.greeting = msg.greeting;
+                        cntrl.hidden = false;
+				    });
+				}
+                
+				$rootScope.$on('LoggedIn', function (event, name) {
+                   cntrl.getGreeting();
+                });
+
+
+            },
+            controllerAs: 'greetingController'
+        };
     });
+
 })();
