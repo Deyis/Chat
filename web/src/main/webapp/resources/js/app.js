@@ -35,7 +35,7 @@
                     $http.post('./login', Object.toparams(this.loginData))
                     .success(function(data){
                         cntrl.hideLoginForm();
-						$rootScope.$emit('LoggedIn', 'denis');
+						$rootScope.$emit('LoggedIn');
                     });
                 }
             },
@@ -62,7 +62,7 @@
 				    });
 				}
                 
-				$rootScope.$on('LoggedIn', function (event, name) {
+				$rootScope.$on('LoggedIn', function (event) {
                    cntrl.getGreeting();
                 });
 
