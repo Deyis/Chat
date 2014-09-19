@@ -18,20 +18,28 @@
 
                 $http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
 
-                this.signed = false;
+                this.signed = true;
+
                 this.loginData = {};
 
+                var cntrl = this;
+
                 this.hideLoginForm = function() {
-                    this.signed = true;                    
+                    this.signed = true;
                 }
 
                 this.showLoginForm = function() {
                     this.signed = false;
                 }
 
-                this.sendData = function() {
-                    var cntrl = this;
+                $http.get('./hello.json').success(function(msg) {
+                   cntrl.hideLoginForm();
+                   $rootScope.$emit('LoggedIn');
+                }).error(function(data, status, headers, config) {
+                   cntrl.showLoginForm();
+                });
 
+                this.sendData = function() {
                     $http.post('./login', Object.toparams(this.loginData))
                     .success(function(data){
                         cntrl.hideLoginForm();
