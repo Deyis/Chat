@@ -9,12 +9,22 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.Set;
 
 @Entity
 @Table(name = "conversations")
+@NamedQueries({
+        @NamedQuery(name = "Conversation.findFreeConversation",
+                query = "select c from Conversation c where " +
+                        "c.language = :language " +
+                        "and c.finished != true " +
+                        "and c.secondUser = null " +
+                        "and c.firstUser.id != :currentUserId")
+})
 public class Conversation implements BaseModel {
 
     @Id

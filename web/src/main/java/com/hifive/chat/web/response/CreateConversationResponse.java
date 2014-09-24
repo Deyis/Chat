@@ -13,11 +13,11 @@ public class CreateConversationResponse extends AbstractResponse {
         this.conversationId = conversationId;
     }
 
-    public long getConversationId() {
+    public Long getConversationId() {
         return conversationId;
     }
 
-    public void setConversationId(long conversationId) {
+    public void setConversationId(Long conversationId) {
         this.conversationId = conversationId;
     }
 }

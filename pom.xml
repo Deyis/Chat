@@ -23,6 +23,8 @@
         <hibernate.version>4.3.5.Final</hibernate.version>
 
         <spring-security.version>3.2.4.RELEASE</spring-security.version>
+
+        <junit.version>4.11</junit.version>
     </properties>
 
     <dependencies>
@@ -118,6 +120,20 @@
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <version>3.0.1</version>
+        </dependency>
+
+        <!-- Test Artifacts -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
         </dependency>
 
     </dependencies>

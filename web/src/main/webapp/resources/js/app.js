@@ -16,8 +16,6 @@
             templateUrl: './static/login-form.html',
             controller: function($http, $rootScope, $scope) {
 
-                $http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
-
                 this.signed = true;
 
                 this.loginData = {};
@@ -40,8 +38,12 @@
                 });
 
                 this.sendData = function() {
-                    $http.post('./login', Object.toparams(this.loginData))
-                    .success(function(data){
+                    $http({
+                        method: 'POST',
+                        url: './login',
+                        data: Object.toparams(this.loginData),
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                    }).success(function(data){
                         cntrl.hideLoginForm();
 						$rootScope.$emit('LoggedIn');
                     });
@@ -56,8 +58,6 @@
             restrict: 'E',
             templateUrl: './static/greeting.html',
             controller:  function($http, $rootScope, $scope) {		
-
-                $http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
 
                 this.hidden = true;
                 this.greeting = "";
@@ -79,5 +79,48 @@
             controllerAs: 'greetingController'
         };
     });
+
+    app.directive('content', function(){
+        return {
+            restrict: 'E',
+            templateUrl: './static/content.html',
+            controller:  function($http, $rootScope, $scope, $interval) {
+
+                this.hidden = true;
+
+                this.conversationId = 0;
+                this.msg = "";
+                var cntrl = this;
+
+                this.getContent = function() {
+                    $http.get('./conversations/check/' + cntrl.conversationId)
+                    .success(function(msg) {
+                        cntrl.hidden = false;
+                        cntrl.msg = msg.code;
+//                        if(msg.code != '1') {
+//                            return;
+//                        }
+//                        $interval.cancel(cntrl.getContent);
+                    });
+                }
+
+                this.initConversation = function() {
+                    $http.post('./conversations/start', JSON.stringify({lang : "en"})).success(function(msg) {
+                        cntrl.conversationId = msg.conversationId;
+                        alert(msg.conversationId);
+                        $interval(cntrl.getContent, 100);
+                    });
+                }
+
+                $rootScope.$on('LoggedIn', function (event) {
+                    cntrl.initConversation();
+                });
+
+
+            },
+            controllerAs: 'contentController'
+        };
+    });
+
 
 })();
