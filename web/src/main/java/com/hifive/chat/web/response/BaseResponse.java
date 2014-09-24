@@ -7,7 +7,9 @@ public interface BaseResponse {
 
     public enum ResponseCode {
         CREATE_CONVERSATION_RESPONSE(1),
-        WAIT_FOR_CONVERSATION_RESPONSE(2);
+        WAIT_FOR_CONVERSATION_RESPONSE(2),
+        MESSAGE_ADDED(3),
+        MESSAGES_RESPONSE(4);
 
         private int code;
 

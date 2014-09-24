@@ -1,9 +1,9 @@
 package com.hifive.chat.repository;
 
 import com.hifive.chat.model.Conversation;
+import com.hifive.chat.model.Message;
 import com.hifive.security.model.User;
 import org.springframework.stereotype.Repository;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
@@ -42,5 +42,30 @@ public class ConversationRepositoryImpl extends AbstractRepository<Conversation>
         res.get(0).setSecondUser(user);
         em.flush();
         return res.get(0);
+    }
+
+    @Override
+    public void addMessageToConversation(long conversationId, String message, User user) {
+        Conversation conversation = em.find(Conversation.class, conversationId);
+        Long lastNumber = conversation.getLastMessageNumber() + 1;
+        conversation.setLastMessageNumber(lastNumber);
+        Message newMessage = new Message();
+        newMessage.setUser(user);
+        newMessage.setMessage(message);
+        newMessage.setConversation(conversation);
+        newMessage.setMessageNumber(lastNumber);
+        em.merge(newMessage);
+        em.flush();
+    }
+
+    @Override
+    public List<Message> getMessagesForConversation(long conversationId, long lastNumber) {
+        return em.createNamedQuery("Message.getMessages")
+                .setParameter("lastMessageNumber", lastNumber).setParameter("conversationId", conversationId).getResultList();
+    }
+
+    @Override
+    public long getLastMessageNumber(long conversationId) {
+        return em.find(Conversation.class, conversationId).getLastMessageNumber();
     }
 }

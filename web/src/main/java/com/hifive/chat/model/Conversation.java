@@ -13,6 +13,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.Date;
 import java.util.Set;
 
 @Entity
@@ -23,7 +24,7 @@ import java.util.Set;
                         "c.language = :language " +
                         "and c.finished != true " +
                         "and c.secondUser = null " +
-                        "and c.firstUser.id != :currentUserId")
+                        "and c.firstUser.id != :currentUserId order by c.id asc")
 })
 public class Conversation implements BaseModel {
 
@@ -47,6 +48,12 @@ public class Conversation implements BaseModel {
 
     @OneToMany(mappedBy="conversation")
     private Set<Message> messages;
+
+    @Column(name = "last_message_number")
+    private Long lastMessageNumber;
+
+    @Column(name = "creation_date")
+    private Date creationDate;
 
     @Override
     public Long getId() {
@@ -95,5 +102,21 @@ public class Conversation implements BaseModel {
 
     public void setFinished(boolean finished) {
         this.finished = finished;
+    }
+
+    public Long getLastMessageNumber() {
+        return lastMessageNumber;
+    }
+
+    public void setLastMessageNumber(Long lastMessageNumber) {
+        this.lastMessageNumber = lastMessageNumber;
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
     }
 }

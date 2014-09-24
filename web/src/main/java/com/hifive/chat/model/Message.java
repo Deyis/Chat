@@ -9,10 +9,19 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import java.util.Date;
 
 @Entity
 @Table(name = "messages")
+@NamedQueries({
+        @NamedQuery(name = "Message.getMessages",
+                query = "select m from Message m where " +
+                        "m.messageNumber > :lastMessageNumber " +
+                        "and m.conversation.id = :conversationId order by messageNumber asc ")
+})
 public class Message implements BaseModel {
 
     @Id
@@ -29,6 +38,12 @@ public class Message implements BaseModel {
 
     @Column(name="message")
     private String message;
+
+    @Column(name = "creation_date")
+    private Date creationDate;
+
+    @Column(name = "message_number")
+    private Long messageNumber;
 
     @Override
     public Long getId() {
@@ -61,5 +76,21 @@ public class Message implements BaseModel {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public Long getMessageNumber() {
+        return messageNumber;
+    }
+
+    public void setMessageNumber(Long messageNumber) {
+        this.messageNumber = messageNumber;
     }
 }

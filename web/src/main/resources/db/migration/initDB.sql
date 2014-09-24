@@ -6,6 +6,7 @@ CREATE TABLE conversations (
     second_user_id INTEGER,
     creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     lang VARCHAR(2) NOT NULL,
+    last_message_number INTEGER,
     finished BOOLEAN DEFAULT FALSE NOT NULL
 );
 
@@ -16,5 +17,6 @@ CREATE TABLE messages (
     conversation_id INTEGER NOT NULL,
     user_id INTEGER NOT NULL,
     message VARCHAR(200) NOT NULL,
+    message_number INTEGER,
     creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
