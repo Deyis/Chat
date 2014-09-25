@@ -32,7 +32,7 @@
 
                 $http.get('./hello.json').success(function(msg) {
                    cntrl.hideLoginForm();
-                   $rootScope.$emit('LoggedIn');
+                   $rootScope.$emit('LoggedIn', cntrl.loginData.login);
                 }).error(function(data, status, headers, config) {
                    cntrl.showLoginForm();
                 });
@@ -45,7 +45,7 @@
                         headers: {'Content-Type': 'application/x-www-form-urlencoded'}
                     }).success(function(data){
                         cntrl.hideLoginForm();
-						$rootScope.$emit('LoggedIn');
+						$rootScope.$emit('LoggedIn', cntrl.loginData.login);
                     });
                 }
             },
@@ -87,7 +87,7 @@
             controller:  function($http, $rootScope, $scope, $interval) {
 
                 this.hidden = true;
-
+                this.login = "";
                 this.getCheckForConversationInterval;
 
                 this.conversationId = 0;
@@ -147,7 +147,12 @@
                         });
                 }
 
-                $rootScope.$on('LoggedIn', function (event) {
+                this.isMine = function(msg) {
+                    return msg.user.username === cntrl.login;
+                }
+
+                $rootScope.$on('LoggedIn', function (event, userName) {
+                    cntrl.login = userName;
                     cntrl.initConversation();
                 });
             },

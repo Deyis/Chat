@@ -6,6 +6,7 @@ import com.hifive.security.model.User;
 import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -55,6 +56,7 @@ public class ConversationRepositoryImpl extends AbstractRepository<Conversation>
         newMessage.setMessage(message);
         newMessage.setConversation(conversation);
         newMessage.setMessageNumber(lastNumber);
+        newMessage.setCreationDate(new Date());
         em.merge(newMessage);
         em.flush();
     }

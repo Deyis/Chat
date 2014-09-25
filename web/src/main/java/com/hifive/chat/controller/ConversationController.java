@@ -56,27 +56,10 @@ public class ConversationController {
     @ResponseBody
     public BaseResponse sendMessage(@RequestBody SendMessageRequest request) {
 
-        System.out.println();
-        System.out.println("*************************************************************************");
-        System.out.println("Send message conversation #" + request.getConversationId() + ", message: " + request.getMessage());
-        System.out.println("*************************************************************************");
-        System.out.println();
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        System.out.println();
-        System.out.println("*************************************************************************");
-        System.out.println("User " + currentUser.getId());
-        System.out.println("*************************************************************************");
-        System.out.println();
 
         conversationService.addMessage(request, currentUser);
         Pair<List<Message>, Long> result = conversationService.getMessages(request.getConversationId(), request.getLastNumber());
-
-        System.out.println();
-        System.out.println("*************************************************************************");
-        System.out.println("Create a response");
-        System.out.println("*************************************************************************");
-        System.out.println();
 
         MessagesResponse response = new MessagesResponse();
         response.setLastNumber(result.getSecond());

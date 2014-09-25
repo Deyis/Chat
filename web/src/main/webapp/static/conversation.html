@@ -1,8 +1,9 @@
 <div class="content-container" ng-hide="conversationController.hidden">
     <blockquote ng-repeat="message in conversationController.messages">
-        <i>{{message.creationDate}}</i>
-        <cite>by: {{message.user.username}}</cite>
-        {{message.message}}
+        <div ng-class="{ myMessage : conversationController.isMine(message), notMyMessage : !conversationController.isMine(message) }">
+            <div> <cite>by: {{message.user.username}}</cite> <i>{{message.creationDate | date:'medium'}}</i> </div>
+            <div> {{message.message}}</div>
+        </div>
     </blockquote>
 
     <form name="reviewForm" ng-submit="conversationController.sendMessage()">

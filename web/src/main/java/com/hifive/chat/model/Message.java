@@ -43,7 +43,6 @@ public class Message implements BaseModel {
     @Column(name="message")
     private String message;
 
-//    @JsonIgnore
     @Column(name = "creation_date")
     private Date creationDate;
 
