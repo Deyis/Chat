@@ -80,47 +80,79 @@
         };
     });
 
-    app.directive('content', function(){
+    app.directive('conversation', function(){
         return {
             restrict: 'E',
-            templateUrl: './static/content.html',
+            templateUrl: './static/conversation.html',
             controller:  function($http, $rootScope, $scope, $interval) {
 
                 this.hidden = true;
 
+                this.getCheckForConversationInterval;
+
                 this.conversationId = 0;
-                this.msg = "";
+                this.lastMessageNumber = 0;
+                this.messages = [];
+                this.message = {};
+
                 var cntrl = this;
 
-                this.getContent = function() {
+                this.proceedWithNewMessages = function(response) {
+                    console.log("response conversation ID:" + cntrl.conversationId);
+                    console.log(response);
+
+                    if(cntrl.lastMessageNumber == response.lastNumber) {
+                        return;
+                    }
+                    cntrl.lastMessageNumber = response.lastNumber;
+                    cntrl.messages.push.apply(cntrl.messages, response.newMessages);
+                }
+
+                this.getMessages = function() {
+                    $http.get('./conversations/'+ cntrl.conversationId + '/messages/' + cntrl.lastMessageNumber)
+                        .success(cntrl.proceedWithNewMessages);
+                }
+
+                this.sendMessage = function() {
+                    cntrl.newMessage.conversationId = cntrl.conversationId;
+                    cntrl.newMessage.lastNumber = cntrl.lastMessageNumber;
+                    console.log("send message conversation ID:" + cntrl.newMessage.conversationId + " message: " + cntrl.newMessage.message);
+
+                    $http.post('./conversations/message', JSON.stringify(cntrl.newMessage))
+                        .success(cntrl.proceedWithNewMessages);
+
+                    cntrl.newMessage = {};
+                }
+
+                this.getCheckForConversation = function() {
                     $http.get('./conversations/check/' + cntrl.conversationId)
-                    .success(function(msg) {
-                        cntrl.hidden = false;
-                        cntrl.msg = msg.code;
-//                        if(msg.code != '1') {
-//                            return;
-//                        }
-//                        $interval.cancel(cntrl.getContent);
-                    });
+                        .success(function(msg) {
+                            if(msg.code != '1') {
+                                console.log("waiting for conversation ID:" + cntrl.conversationId);
+                                return;
+                            }
+                            console.log("begin conversation ID:" + cntrl.conversationId);
+                            $interval.cancel(cntrl.getCheckForConversationInterval);
+                            cntrl.hidden = false;
+                            $interval(cntrl.getMessages, 2000);
+                        });
                 }
 
                 this.initConversation = function() {
-                    $http.post('./conversations/start', JSON.stringify({lang : "en"})).success(function(msg) {
-                        cntrl.conversationId = msg.conversationId;
-                        alert(msg.conversationId);
-                        $interval(cntrl.getContent, 100);
-                    });
+                    $http.post('./conversations/start', JSON.stringify({lang : "en"}))
+                        .success(function(msg) {
+                            cntrl.conversationId = msg.conversationId;
+                            console.log("start conversation ID:" + cntrl.conversationId);
+                            cntrl.getCheckForConversationInterval = $interval(cntrl.getCheckForConversation, 100);
+                        });
                 }
 
                 $rootScope.$on('LoggedIn', function (event) {
                     cntrl.initConversation();
                 });
-
-
             },
-            controllerAs: 'contentController'
+            controllerAs: 'conversationController'
         };
     });
-
 
 })();

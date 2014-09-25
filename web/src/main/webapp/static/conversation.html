@@ -1,0 +1,12 @@
+<div class="content-container" ng-hide="conversationController.hidden">
+    <blockquote ng-repeat="message in conversationController.messages">
+        <i>{{message.creationDate}}</i>
+        <cite>by: {{message.user.username}}</cite>
+        {{message.message}}
+    </blockquote>
+
+    <form name="reviewForm" ng-submit="conversationController.sendMessage()">
+        <textarea ng-model="conversationController.newMessage.message"></textarea>
+        <input type="submit" value="Submit" />
+    </form>
+</div>

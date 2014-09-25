@@ -1,9 +1,12 @@
 package com.hifive.chat.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hifive.security.model.User;
+
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -29,16 +32,18 @@ public class Message implements BaseModel {
     private Long id;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name="conversation_id")
     private Conversation conversation;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="user_id")
     private User user;
 
     @Column(name="message")
     private String message;
 
+//    @JsonIgnore
     @Column(name = "creation_date")
     private Date creationDate;
 

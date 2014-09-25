@@ -1,5 +1,6 @@
 package com.hifive.security.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.CascadeType;
@@ -38,6 +39,7 @@ public class User implements UserDetails {
     @Column(name = "enabled")
     private Boolean enabled;
 
+    @JsonIgnore
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(name="users_auth",
             joinColumns={@JoinColumn(name="user_id")},

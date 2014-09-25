@@ -25,6 +25,7 @@ public class ConversationRepositoryImpl extends AbstractRepository<Conversation>
         conversation.setFirstUser(firstUser);
         conversation.setSecondUser(secondUser);
         conversation.setLanguage(language);
+        conversation.setLastMessageNumber(new Long(0));
         conversation = em.merge(conversation);
         em.flush();
         return conversation;
@@ -45,8 +46,8 @@ public class ConversationRepositoryImpl extends AbstractRepository<Conversation>
     }
 
     @Override
-    public void addMessageToConversation(long conversationId, String message, User user) {
-        Conversation conversation = em.find(Conversation.class, conversationId);
+    public void addMessageToConversation(Conversation conversation, String message, User user) {
+//        Conversation conversation = em.find(Conversation.class, conversationId);
         Long lastNumber = conversation.getLastMessageNumber() + 1;
         conversation.setLastMessageNumber(lastNumber);
         Message newMessage = new Message();

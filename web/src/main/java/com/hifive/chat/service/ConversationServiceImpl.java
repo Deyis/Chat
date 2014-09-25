@@ -31,7 +31,15 @@ public class ConversationServiceImpl implements ConversationService {
 
     @Override
     public long addMessage(SendMessageRequest request, User currentUser) {
-        conversationRepository.addMessageToConversation(request.getConversationId(), request.getMessage(), currentUser);
+        Conversation conversation = conversationRepository.findById(request.getConversationId());
+        if (conversation == null ||
+                !(
+                    conversation.getFirstUser().getId().equals(currentUser.getId()) ||
+                    conversation.getSecondUser().getId().equals(currentUser.getId())
+                )) {
+            return 0;
+        }
+        conversationRepository.addMessageToConversation(conversation, request.getMessage(), currentUser);
         return conversationRepository.getLastMessageNumber(request.getConversationId());
     }
 
