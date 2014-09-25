@@ -30,9 +30,9 @@
                     this.signed = false;
                 }
 
-                $http.get('./hello.json').success(function(msg) {
+                $http.get('./details.json').success(function(msg) {
                    cntrl.hideLoginForm();
-                   $rootScope.$emit('LoggedIn', cntrl.loginData.login);
+                   $rootScope.$emit('LoggedIn', msg.username);
                 }).error(function(data, status, headers, config) {
                    cntrl.showLoginForm();
                 });

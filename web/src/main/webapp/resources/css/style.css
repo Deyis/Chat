@@ -1,11 +1,11 @@
 .cool { border: 1px solid red; }
 
 .myMessage {
-    border: 1px solid grey;
+    border: 2px solid grey;
 }
 
 .notMyMessage {
-    border: 1px solid green;
+    border: 2px solid green;
 }
 
 .invisible {

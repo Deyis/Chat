@@ -1,6 +1,7 @@
 package com.hifive.chat.controller;
 
 
+import com.hifive.chat.web.response.UserDetailsResponse;
 import com.hifive.security.model.User;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContext;
@@ -29,6 +30,15 @@ public class HomeController {
         User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 //        TODO add password encryption
         return new HelloResponse("Hello, " + user.getUsername() + "!!!, Your password is: " + user.getPassword());
+    }
+
+
+    @Secured({"ROLE_ADMIN", "ROLE_USER"})
+    @RequestMapping(value = "/details", method = RequestMethod.GET)
+    @ResponseBody
+    public UserDetailsResponse getDetails() {
+        User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return new UserDetailsResponse(user.getUsername());
     }
 
     private class HelloResponse {

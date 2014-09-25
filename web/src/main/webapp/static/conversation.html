@@ -7,7 +7,11 @@
     </blockquote>
 
     <form name="reviewForm" ng-submit="conversationController.sendMessage()">
-        <textarea ng-model="conversationController.newMessage.message"></textarea>
-        <input type="submit" value="Submit" />
+        <div>
+            <textarea ng-model="conversationController.newMessage.message"></textarea>
+        </div>
+        <div>
+            <input type="submit" value="Submit" />
+        </div>
     </form>
 </div>
