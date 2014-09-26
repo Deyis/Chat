@@ -168,81 +168,81 @@
 
 
     app.directive('conversationContent', function(){
-            return {
-                restrict: 'E',
-                templateUrl: './static/conversation-content.html',
-                controller:  function($http, $rootScope, $scope, $interval) {
+        return {
+            restrict: 'E',
+            templateUrl: './static/conversation-content.html',
+            controller:  function($http, $rootScope, $scope, $interval) {
 
-                    this.login = "";
+                this.login = "";
 
-                    this.conversationId = 0;
-                    this.lastMessageNumber = 0;
-                    this.messages = [];
-                    this.message = {};
+                this.conversationId = 0;
+                this.lastMessageNumber = 0;
+                this.messages = [];
+                this.message = {};
 
-                    this.getMessagesInterval;
-                    var cntrl = this;
+                this.getMessagesInterval;
+                var cntrl = this;
 
-                    this.init = function(conversation) {
-                        cntrl.conversationId = conversation.id;
-                        cntrl.login = conversation.me;
-                        cntrl.getMessagesInterval = $interval(cntrl.getMessages, 2000);
+                this.init = function(conversation) {
+                    cntrl.conversationId = conversation.id;
+                    cntrl.login = conversation.me;
+                    cntrl.getMessagesInterval = $interval(cntrl.getMessages, 2000);
+                }
+
+                this.close = function(conversationId) {
+                    $interval.cancel(cntrl.getMessagesInterval);
+                    $rootScope.$emit('ConversationClosed', cntrl.conversationId);
+                }
+
+                this.proceedWithNewMessages = function(response) {
+                    console.log("response conversation ID:" + cntrl.conversationId);
+                    console.log(response);
+
+                    if(cntrl.lastMessageNumber == response.lastNumber) {
+                        return;
                     }
+                    cntrl.lastMessageNumber = response.lastNumber;
+                    cntrl.messages.push.apply(cntrl.messages, response.newMessages);
+                }
 
-                    this.close = function(conversationId) {
-                        $interval.cancel(cntrl.getMessagesInterval);
-                        $rootScope.$emit('ConversationClosed', cntrl.conversationId);
-                    }
+                this.getMessages = function() {
+                    $http.get('./conversations/'+ cntrl.conversationId + '/messages/' + cntrl.lastMessageNumber)
+                        .success(cntrl.proceedWithNewMessages);
+                }
 
-                    this.proceedWithNewMessages = function(response) {
-                        console.log("response conversation ID:" + cntrl.conversationId);
-                        console.log(response);
+                this.sendMessage = function() {
+                    cntrl.newMessage.conversationId = cntrl.conversationId;
+                    cntrl.newMessage.lastNumber = cntrl.lastMessageNumber;
+                    console.log("send message conversation ID:" + cntrl.newMessage.conversationId + " message: " + cntrl.newMessage.message);
 
-                        if(cntrl.lastMessageNumber == response.lastNumber) {
-                            return;
-                        }
-                        cntrl.lastMessageNumber = response.lastNumber;
-                        cntrl.messages.push.apply(cntrl.messages, response.newMessages);
-                    }
+                    $http.post('./conversations/message', JSON.stringify(cntrl.newMessage))
+                        .success(cntrl.proceedWithNewMessages);
 
-                    this.getMessages = function() {
-                        $http.get('./conversations/'+ cntrl.conversationId + '/messages/' + cntrl.lastMessageNumber)
-                            .success(cntrl.proceedWithNewMessages);
-                    }
+                    cntrl.newMessage = {};
+                }
 
-                    this.sendMessage = function() {
-                        cntrl.newMessage.conversationId = cntrl.conversationId;
-                        cntrl.newMessage.lastNumber = cntrl.lastMessageNumber;
-                        console.log("send message conversation ID:" + cntrl.newMessage.conversationId + " message: " + cntrl.newMessage.message);
+                this.isMine = function(msg) {
+                    return msg.user.username === cntrl.login;
+                }
 
-                        $http.post('./conversations/message', JSON.stringify(cntrl.newMessage))
-                            .success(cntrl.proceedWithNewMessages);
-
-                        cntrl.newMessage = {};
-                    }
-
-                    this.isMine = function(msg) {
-                        return msg.user.username === cntrl.login;
-                    }
-
-                },
-                controllerAs: 'conversationContentController'
-            };
-        });
+            },
+            controllerAs: 'conversationContentController'
+        };
+    });
 
     app.directive('conversationHeader', function(){
-            return {
-                restrict: 'E',
-                templateUrl: './static/conversation-header.html'
-            };
-        });
+        return {
+            restrict: 'E',
+            templateUrl: './static/conversation-header.html'
+        };
+    });
 
     app.directive('conversationCreateForm', function(){
-            return {
-                restrict: 'E',
-                templateUrl: './static/conversation-create-form.html'
-            };
-        });
+        return {
+            restrict: 'E',
+            templateUrl: './static/conversation-create-form.html'
+        };
+    });
 
 
 
