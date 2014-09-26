@@ -171,7 +171,7 @@
                     this.message = {};
 
                     this.getMessagesInterval;
-
+                    this.closed = false;
                     var cntrl = this;
 
                     this.init = function(conversation) {
@@ -181,6 +181,7 @@
                     }
 
                     this.close = function(conversationId) {
+                        cntrl.closed = true;
                         $interval.cancel(cntrl.getMessagesInterval);
                     }
 
@@ -223,11 +224,7 @@
     app.directive('conversationHeader', function(){
             return {
                 restrict: 'E',
-                templateUrl: './static/conversation-header.html',
-                controller:  function($http, $rootScope, $scope, $interval) {
-
-                },
-                controllerAs: 'conversationHeaderController'
+                templateUrl: './static/conversation-header.html'
             };
         });
 

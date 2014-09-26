@@ -1,4 +1,6 @@
-<div class = "conversation-content-container" ng-init="conversationContentController.init(conversation)">
+<div class = "conversation-content-container" ng-init="conversationContentController.init(conversation)" ng-hide="conversationContentController.closed">
+    <conversation-header></conversation-header>
+
     <blockquote ng-repeat="message in conversationContentController.messages">
         <div ng-class="{ myMessage : conversationContentController.isMine(message), notMyMessage : !conversationContentController.isMine(message) }">
             <div> <cite>by: {{message.user.username}}</cite> <i>{{message.creationDate | date:'medium'}}</i> </div>
