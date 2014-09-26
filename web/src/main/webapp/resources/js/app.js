@@ -86,41 +86,47 @@
             templateUrl: './static/conversation.html',
             controller:  function($http, $rootScope, $scope, $interval) {
 
-                this.hidden = true;
+
                 this.login = "";
                 this.getCheckForConversationInterval;
 
-                this.conversationId = 0;
-                this.lastMessageNumber = 0;
-
                 this.conversations = [];
-
-                this.messages = [];
-                this.message = {};
+                this.conversationsToCheck = [];
 
                 var cntrl = this;
 
+                this.isHidden = function(conversationId) {
+                    return false;
+                }
+
                 this.getCheckForConversation = function() {
-                    $http.get('./conversations/check/' + cntrl.conversationId)
-                        .success(function(msg) {
-                            if(msg.code != '1') {
-                                console.log("waiting for conversation ID:" + cntrl.conversationId);
-                                return;
-                            }
-                            console.log("begin conversation ID:" + cntrl.conversationId);
-                            $interval.cancel(cntrl.getCheckForConversationInterval);
-                            cntrl.hidden = false;
-                            cntrl.conversations.push({id: cntrl.conversationId});
-//                            $interval(cntrl.getMessages, 2000);
-                        });
+
+                    cntrl.conversationsToCheck.forEach(function(conversation) {
+
+                        $http.get('./conversations/check/' + conversation.id)
+                            .success(function(msg) {
+                                if(msg.code != '1') {
+                                    console.log("waiting for conversation ID:" + msg.conversationId);
+                                    return;
+                                }
+                                console.log("begin conversation ID:" + msg.conversationId);
+
+                                cntrl.conversationsToCheck = cntrl.conversationsToCheck.filter(
+                                    function(c) { return c.id !==  msg.conversationId}
+                                );
+
+                                cntrl.conversations.push({id: msg.conversationId, me: cntrl.login });
+                            });
+
+                    });
                 }
 
                 this.initConversation = function() {
                     $http.post('./conversations/start', JSON.stringify({lang : "en"}))
                         .success(function(msg) {
-                            cntrl.conversationId = msg.conversationId;
-                            console.log("start conversation ID:" + cntrl.conversationId);
-                            cntrl.getCheckForConversationInterval = $interval(cntrl.getCheckForConversation, 100);
+                            console.log("start conversation ID:" + msg.conversationId);
+                            cntrl.conversationsToCheck.push({id: msg.conversationId});
+                            cntrl.getCheckForConversationInterval = $interval(cntrl.getCheckForConversation, 2000);
                         });
                 }
 
@@ -152,8 +158,9 @@
 
                     var cntrl = this;
 
-                    this.init = function(conversationId) {
-                        cntrl.conversationId = conversationId;
+                    this.init = function(conversation) {
+                        cntrl.conversationId = conversation.id;
+                        cntrl.login = conversation.me;
                         cntrl.getMessagesInterval = $interval(cntrl.getMessages, 2000);
                     }
 
@@ -192,9 +199,6 @@
                         return msg.user.username === cntrl.login;
                     }
 
-                    $rootScope.$on('LoggedIn', function (event, userName) {
-                        cntrl.login = userName;
-                    });
                 },
                 controllerAs: 'conversationContentController'
             };

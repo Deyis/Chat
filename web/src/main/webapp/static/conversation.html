@@ -1,6 +1,8 @@
 <div class="conversation-container" >
     <blockquote ng-repeat="conversation in conversationController.conversations">
-        <conversation-header></conversation-header>
-        <conversation-content ng-hide="conversationController.hidden"></conversation-content>
+        <div ng-hide="conversationController.isHidden(conversation.id)">
+            <conversation-header></conversation-header>
+            <conversation-content></conversation-content>
+        </div>
     </blockquote>
 </div>
