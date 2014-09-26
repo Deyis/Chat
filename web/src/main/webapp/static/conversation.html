@@ -1,4 +1,7 @@
 <div class="conversation-container" >
+
+    <conversation-create-form></conversation-create-form>
+
     <blockquote ng-repeat="conversation in conversationController.conversations">
         <div ng-hide="conversationController.isHidden(conversation.id)">
             <conversation-header></conversation-header>

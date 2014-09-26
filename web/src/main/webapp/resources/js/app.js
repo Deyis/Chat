@@ -90,10 +90,23 @@
                 this.login = "";
                 this.getCheckForConversationInterval;
 
+                this.createFormHidden = true;
+
+
+                this.newConversation = {};
+
                 this.conversations = [];
                 this.conversationsToCheck = [];
 
                 var cntrl = this;
+
+                this.showCreationForm = function() {
+                    this.createFormHidden = false;
+                }
+
+                this.hideCreationForm = function() {
+                    this.createFormHidden = true;
+                }
 
                 this.isHidden = function(conversationId) {
                     return false;
@@ -122,17 +135,20 @@
                 }
 
                 this.initConversation = function() {
-                    $http.post('./conversations/start', JSON.stringify({lang : "en"}))
+                    cntrl.hideCreationForm();
+                    $http.post('./conversations/start', JSON.stringify(cntrl.newConversation))
                         .success(function(msg) {
                             console.log("start conversation ID:" + msg.conversationId);
                             cntrl.conversationsToCheck.push({id: msg.conversationId});
                             cntrl.getCheckForConversationInterval = $interval(cntrl.getCheckForConversation, 2000);
                         });
+
+                    cntrl.newConversation = {};
                 }
 
                 $rootScope.$on('LoggedIn', function (event, userName) {
                     cntrl.login = userName;
-                    cntrl.initConversation();
+//                    cntrl.initConversation();
                 });
             },
             controllerAs: 'conversationController'
@@ -212,6 +228,13 @@
 
                 },
                 controllerAs: 'conversationHeaderController'
+            };
+        });
+
+    app.directive('conversationCreateForm', function(){
+            return {
+                restrict: 'E',
+                templateUrl: './static/conversation-create-form.html'
             };
         });
 

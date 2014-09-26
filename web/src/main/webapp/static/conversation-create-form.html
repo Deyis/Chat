@@ -1,0 +1,15 @@
+<div class="conversation-create-form">
+    <a href ng-click="conversationController.showCreationForm()" ng-show="conversationController.createFormHidden">New Conversation</a>
+
+    <form class="create-conversation-form" ng-submit="conversationController.initConversation()"
+          ng-hide="conversationController.createFormHidden">
+
+        <select ng-model="conversationController.newConversation.lang">
+            <option value="en">English</option>
+            <option value="ru">Russian</option>
+        </select>
+
+        <input class="btn btn-lg btn-primary btn-block" type="submit" value="Create"/>
+        <a href ng-click="conversationController.hideCreationForm()">(X)</a>
+    </form>
+</div>
