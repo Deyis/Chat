@@ -146,9 +146,19 @@
                     cntrl.newConversation = {};
                 }
 
+                this.closeConversation = function(conversationId) {
+                    console.log("Conversation closed ID: " + conversationId);
+                    cntrl.conversations = cntrl.conversations.filter(
+                        function(c) { return c.id !==  conversationId}
+                    );
+                }
+
                 $rootScope.$on('LoggedIn', function (event, userName) {
                     cntrl.login = userName;
-//                    cntrl.initConversation();
+                });
+
+                $rootScope.$on('ConversationClosed', function (event, conversationId) {
+                    cntrl.closeConversation(conversationId);
                 });
             },
             controllerAs: 'conversationController'
@@ -171,7 +181,6 @@
                     this.message = {};
 
                     this.getMessagesInterval;
-                    this.closed = false;
                     var cntrl = this;
 
                     this.init = function(conversation) {
@@ -181,8 +190,8 @@
                     }
 
                     this.close = function(conversationId) {
-                        cntrl.closed = true;
                         $interval.cancel(cntrl.getMessagesInterval);
+                        $rootScope.$emit('ConversationClosed', cntrl.conversationId);
                     }
 
                     this.proceedWithNewMessages = function(response) {
