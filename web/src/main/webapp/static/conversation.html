@@ -1,17 +1,6 @@
-<div class="content-container" ng-hide="conversationController.hidden">
-    <blockquote ng-repeat="message in conversationController.messages">
-        <div ng-class="{ myMessage : conversationController.isMine(message), notMyMessage : !conversationController.isMine(message) }">
-            <div> <cite>by: {{message.user.username}}</cite> <i>{{message.creationDate | date:'medium'}}</i> </div>
-            <div> {{message.message}}</div>
-        </div>
+<div class="conversation-container" >
+    <blockquote ng-repeat="conversation in conversationController.conversations">
+        <conversation-header></conversation-header>
+        <conversation-content ng-hide="conversationController.hidden"></conversation-content>
     </blockquote>
-
-    <form name="reviewForm" ng-submit="conversationController.sendMessage()">
-        <div>
-            <textarea ng-model="conversationController.newMessage.message"></textarea>
-        </div>
-        <div>
-            <input type="submit" value="Submit" />
-        </div>
-    </form>
 </div>

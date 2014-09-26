@@ -1,0 +1,17 @@
+<div class = "conversation-content-container" ng-init="conversationContentController.init(conversation.id)">
+    <blockquote ng-repeat="message in conversationContentController.messages">
+        <div ng-class="{ myMessage : conversationContentController.isMine(message), notMyMessage : !conversationContentController.isMine(message) }">
+            <div> <cite>by: {{message.user.username}}</cite> <i>{{message.creationDate | date:'medium'}}</i> </div>
+            <div> {{message.message}}</div>
+        </div>
+    </blockquote>
+
+    <form name="reviewForm" ng-submit="conversationContentController.sendMessage()">
+        <div>
+            <textarea ng-model="conversationContentController.newMessage.message"></textarea>
+        </div>
+        <div>
+            <input type="submit" value="Submit" />
+        </div>
+    </form>
+</div>
