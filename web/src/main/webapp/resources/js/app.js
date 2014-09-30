@@ -8,7 +8,7 @@
         return p.join('&');
     };
 
-    var app = angular.module('chat', [ ]);
+    var app = angular.module('chat', ['ui.bootstrap']);
 
     app.directive('loginForm', function(){
         return {
