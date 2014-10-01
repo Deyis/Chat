@@ -17,8 +17,10 @@
             controller: function($http, $rootScope, $scope) {
 
                 this.signed = true;
+                this.isRegistration = false;
 
                 this.loginData = {};
+                this.registrationData = {};
 
                 var cntrl = this;
 
@@ -30,24 +32,42 @@
                     this.signed = false;
                 }
 
-                $http.get('./details.json').success(function(msg) {
-                   cntrl.hideLoginForm();
-                   $rootScope.$emit('LoggedIn', msg.username);
-                }).error(function(data, status, headers, config) {
-                   cntrl.showLoginForm();
-                });
+                this.showRegistrationForm = function() {
+                    this.isRegistration = true;
+                }
 
-                this.sendData = function() {
+                this.hideRegistrationForm = function() {
+                    this.isRegistration = false;
+                }
+
+                this.getDetails = function() {
+                    $http.get('./details.json').success(function(msg) {
+                       cntrl.hideLoginForm();
+                       $rootScope.$emit('LoggedIn', msg.username);
+                    }).error(function(data, status, headers, config) {
+                       cntrl.showLoginForm();
+                    });
+                }
+
+                this.loggedInSuccessHandler = function(data) {
+                    cntrl.getDetails();
+                }
+
+                this.sendLoginData = function() {
                     $http({
                         method: 'POST',
                         url: './login',
-                        data: Object.toparams(this.loginData),
+                        data: Object.toparams(cntrl.loginData),
                         headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-                    }).success(function(data){
-                        cntrl.hideLoginForm();
-						$rootScope.$emit('LoggedIn', cntrl.loginData.login);
-                    });
+                    }).success(cntrl.loggedInSuccessHandler);
                 }
+
+                this.sendRegistrationData = function() {
+                    $http.post('./register', JSON.stringify(cntrl.registrationData))
+                        .success(cntrl.loggedInSuccessHandler);
+                }
+
+                this.getDetails();
             },
             controllerAs: 'loginController'
         };

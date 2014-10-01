@@ -9,16 +9,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * Created by Denis_Ivanchenko on 7/23/2014.
- */
-
 @Entity
 @Table(name = "authorities")
+@NamedQueries(
+        @NamedQuery( name = "Authority.getByName", query = "select a from Authority a where a.authority = :authority")
+)
 public class Authority implements GrantedAuthority {
 
     @Id

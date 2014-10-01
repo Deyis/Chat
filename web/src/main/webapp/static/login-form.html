@@ -1,14 +1,26 @@
 <div class="popup" ng-hide="loginController.signed">
-    <div class="login-container">
+    <div class="login-container" ng-hide="loginController.isRegistration">
         <div class="wrapper">
-            <form class="form-signin" ng-submit="loginController.sendData()">
+            <form class="form-signin" ng-submit="loginController.sendLoginData()">
                 <h2 class="form-signin-heading">Sign in to continue</h2>
                 <img class="profile-img" src="./resources/img/profile.png" alt="">
                 <input type="text" ng-model="loginController.loginData.login" class="form-control" placeholder="Email" required autofocus />
                 <input type="password" ng-model="loginController.loginData.password" class="form-control" placeholder="Password" required />
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
             </form>
-            <a href="#" class="text-center new-account">Create an account </a>
+            <a href ng-click="loginController.showRegistrationForm()" class="text-center new-account">Create an account </a>
+        </div>
+    </div>
+    <div class="register-container" ng-show="loginController.isRegistration">
+        <div class="wrapper">
+            <form class="form-signin" ng-submit="loginController.sendRegistrationData()">
+                <h2 class="form-signin-heading">Register to continue</h2>
+                <img class="profile-img" src="./resources/img/profile.png" alt="">
+                <input type="text" ng-model="loginController.registrationData.login" class="form-control" placeholder="Email" required autofocus />
+                <input type="password" ng-model="loginController.registrationData.password" class="form-control" placeholder="Password" required />
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
+            </form>
+            <a href ng-click="loginController.hideRegistrationForm()" class="text-center new-account">Close(X) </a>
         </div>
     </div>
 </div>
