@@ -30,7 +30,7 @@
     left:0;
 }
 
-.login-container {
+.login-container, register-container {
     margin: 15% auto;
     width: 330px;
 }
