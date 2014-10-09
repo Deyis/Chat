@@ -11,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 @Repository
@@ -32,11 +35,7 @@ public class ConversationServiceImpl implements ConversationService {
     @Override
     public long addMessage(SendMessageRequest request, User currentUser) {
         Conversation conversation = conversationRepository.findById(request.getConversationId());
-        if (conversation == null ||
-                !(
-                    conversation.getFirstUser().getId().equals(currentUser.getId()) ||
-                    conversation.getSecondUser().getId().equals(currentUser.getId())
-                )) {
+        if (conversation == null || !(isUserInConversation(conversation, currentUser))) {
             return 0;
         }
         conversationRepository.addMessageToConversation(conversation, request.getMessage(), currentUser);
@@ -47,12 +46,24 @@ public class ConversationServiceImpl implements ConversationService {
     public Pair<List<Message>, Long> getMessages(long conversationId, long lastNumber) {
         List<Message> newMessages = conversationRepository.getMessagesForConversation(conversationId, lastNumber);
         Long newLastNumber = conversationRepository.getLastMessageNumber(conversationId);
-        return  new Pair<List<Message>, Long>(newMessages, newLastNumber);
+        return  new Pair<>(newMessages, newLastNumber);
     }
 
 
     @Override
     public Conversation checkConversation(long conversationId) {
         return conversationRepository.findById(conversationId);
+    }
+
+    private boolean isTheSameUser(User a, User b) {
+        return Comparator.comparing(User::getId).compare(a, b) == 0;
+    }
+
+    private boolean isAnyMatch(User a, User... others) {
+        return Arrays.asList(others).stream().anyMatch((b) -> isTheSameUser(a, b));
+    }
+
+    private boolean isUserInConversation(Conversation conversation, User user) {
+        return isAnyMatch(user, conversation.getFirstUser(), conversation.getSecondUser());
     }
 }
