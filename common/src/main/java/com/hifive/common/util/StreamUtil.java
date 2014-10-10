@@ -19,9 +19,11 @@ public class StreamUtil {
 
             @Override
             public boolean hasNext() {
-                boolean result = it.hasNext();
+                if (!it.hasNext()) {
+                    return false;
+                }
                 key = (K) it.next();
-                return result && it.hasNext();
+                return it.hasNext();
             }
 
             @Override
