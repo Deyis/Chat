@@ -1,6 +1,7 @@
 package com.hifive.chat.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.hifive.common.model.AbstractModel;
 import com.hifive.common.model.BaseModel;
 import com.hifive.security.model.User;
 
@@ -26,7 +27,7 @@ import java.util.Date;
                         "m.messageNumber > :lastMessageNumber " +
                         "and m.conversation.id = :conversationId order by messageNumber asc ")
 })
-public class Message implements BaseModel {
+public class Message extends AbstractModel implements BaseModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

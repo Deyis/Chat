@@ -1,5 +1,6 @@
 package com.hifive.chat.model;
 
+import com.hifive.common.model.AbstractModel;
 import com.hifive.common.model.BaseModel;
 import com.hifive.security.model.User;
 
@@ -27,7 +28,7 @@ import java.util.Set;
                         "and c.secondUser = null " +
                         "and c.firstUser.id != :currentUserId order by c.id asc")
 })
-public class Conversation implements BaseModel {
+public class Conversation extends AbstractModel implements BaseModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

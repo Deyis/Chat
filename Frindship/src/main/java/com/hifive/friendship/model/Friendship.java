@@ -1,5 +1,6 @@
 package com.hifive.friendship.model;
 
+import com.hifive.common.model.AbstractModel;
 import com.hifive.common.model.BaseModel;
 import com.hifive.security.model.User;
 
@@ -21,7 +22,7 @@ import java.util.Set;
 @NamedQueries({
     @NamedQuery(name = "Friendship.findByUserId", query = "select f from Friendship f where user.id = :userId")
 })
-public class Friendship implements BaseModel {
+public class Friendship extends AbstractModel implements BaseModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,5 +1,6 @@
 package com.hifive.security.model;
 
+import com.hifive.common.model.AbstractModel;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.Column;
@@ -20,7 +21,7 @@ import java.util.Set;
 @NamedQueries(
         @NamedQuery( name = "Authority.getByName", query = "select a from Authority a where a.authority = :authority")
 )
-public class Authority implements GrantedAuthority {
+public class Authority extends AbstractModel implements GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

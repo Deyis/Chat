@@ -17,30 +17,13 @@ public class FriendshipRepositoryImpl extends AbstractRepository<Friendship> imp
 
     @Override
     public void addFiends(User user, List<User> friends) {
-        Friendship friendship = getByUserId(user.getId());
-//        Check if this friends are not exist
-        friends = Arrays.asList((User[])
-                friends.stream().filter(friend ->
-                        friendship.getFriends().stream().allMatch(u ->
-                                !friend.getId().equals(u.getId())
-                        )
-                ).toArray());
-        friendship.getFriends().addAll(friends);
+        getByUserId(user.getId()).getFriends().addAll(friends);
         em.flush();
     }
 
     @Override
     public void removeFriends(User user, List<User> friends) {
-
-        Friendship friendship = getByUserId(user.getId());
-//        Check if this friends are exist
-        friends = Arrays.asList((User[])
-                friends.stream().filter(friend ->
-                                friendship.getFriends().stream().anyMatch(u ->
-                                    friend.getId().equals(u.getId())
-                                )
-                ).toArray());
-        friendship.getFriends().removeAll(friends);
+        getByUserId(user.getId()).getFriends().removeAll(friends);
         em.flush();
     }
 
