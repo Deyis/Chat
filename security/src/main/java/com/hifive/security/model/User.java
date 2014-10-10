@@ -23,7 +23,8 @@ import java.util.Set;
 @Table(name = "users")
 @NamedQueries({
         @NamedQuery(name = "User.findByName", query = "select u from User u where u.username = :userName"),
-        @NamedQuery(name = "User.findByNameWithAuth", query = "select u from User u left join fetch u.authorities a where u.username = :userName")
+        @NamedQuery(name = "User.findByNameWithAuth", query = "select u from User u left join fetch u.authorities a where u.username = :userName"),
+        @NamedQuery(name = "Users.findByIds", query = "select u from User u where u.id in (:ids)")
 })
 public class User implements UserDetails, BaseModel {
 

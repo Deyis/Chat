@@ -1,5 +1,6 @@
 package com.hifive.security.service;
 
+import com.hifive.common.repository.AbstractRepository;
 import com.hifive.security.model.Authority;
 import com.hifive.security.model.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,18 +10,20 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 
 
 @Repository("userAuthService")
 @Transactional
-public class UserRepositoryImpl implements UserRepository {
+public class UserRepositoryImpl extends AbstractRepository<User> implements UserRepository {
 
     @PersistenceContext
     private EntityManager em;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return (UserDetails) em.createNamedQuery("User.findByNameWithAuth").setParameter("userName", username).getSingleResult();
+        return getSingleByNamedQuery("User.findByNameWithAuth", "userName", username);
+//        em.createNamedQuery("User.findByNameWithAuth").setParameter("userName", username).getSingleResult();
     }
 
     @Override
@@ -46,10 +49,16 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public User grantRole(User user, String authority) {
-        Authority auth = (Authority) em.createNamedQuery("Authority.getByName").setParameter("authority", authority).getSingleResult();
+        Authority auth = (Authority) createAndFillQuery("Authority.getByName", "authority", authority).getSingleResult();
+//        em.createNamedQuery("Authority.getByName").setParameter("authority", authority).getSingleResult();
         user.getAuthorities().add(auth);
         user = em.merge(user);
         return user;
+    }
+
+    @Override
+    public List<User> getUsersByIds(List<Long> ids) {
+        return getListByNamedQuery("Users.findByIds", "ids", ids);
     }
 
 }

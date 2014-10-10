@@ -17,5 +17,5 @@ public interface ConversationService extends BaseService {
     Conversation createConversationFromRequest(CreateConversationRequest request, User currentUser);
     long addMessage(SendMessageRequest request, User currentUser);
     Pair<List<Message>, Long> getMessages(long conversationId, long lastNumber);
-    public Conversation checkConversation(long conversationId);
+    Conversation checkConversation(long conversationId);
 }
