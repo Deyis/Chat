@@ -1,5 +1,6 @@
 package com.hifive.chat.model;
 
+import com.hifive.common.model.BaseModel;
 import com.hifive.security.model.User;
 
 import javax.persistence.Column;

@@ -5,6 +5,7 @@ import com.hifive.chat.model.Message;
 import com.hifive.chat.util.Pair;
 import com.hifive.chat.web.request.CreateConversationRequest;
 import com.hifive.chat.web.request.SendMessageRequest;
+import com.hifive.common.service.BaseService;
 import com.hifive.security.model.User;
 import org.springframework.transaction.annotation.Transactional;
 

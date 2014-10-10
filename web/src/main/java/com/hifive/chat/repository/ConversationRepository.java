@@ -2,6 +2,7 @@ package com.hifive.chat.repository;
 
 import com.hifive.chat.model.Conversation;
 import com.hifive.chat.model.Message;
+import com.hifive.common.repository.BaseRepository;
 import com.hifive.security.model.User;
 
 import java.util.List;

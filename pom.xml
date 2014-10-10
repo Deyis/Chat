@@ -11,6 +11,8 @@
     <modules>
         <module>security</module>
         <module>web</module>
+        <module>Frindship</module>
+        <module>common</module>
     </modules>
 
     <packaging>pom</packaging>

@@ -1,6 +1,7 @@
 package com.hifive.chat.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.hifive.common.model.BaseModel;
 import com.hifive.security.model.User;
 
 

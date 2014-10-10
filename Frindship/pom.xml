@@ -9,15 +9,11 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>web</artifactId>
-    <packaging>war</packaging>
+    <artifactId>chat-friendship</artifactId>
+
+    <packaging>jar</packaging>
 
     <dependencies>
-        <dependency>
-            <groupId>com.hifive</groupId>
-            <artifactId>chat-security</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
         <dependency>
             <groupId>com.hifive</groupId>
             <artifactId>chat-common</artifactId>
@@ -25,9 +21,10 @@
         </dependency>
         <dependency>
             <groupId>com.hifive</groupId>
-            <artifactId>chat-friendship</artifactId>
+            <artifactId>chat-security</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
+
 
 </project>

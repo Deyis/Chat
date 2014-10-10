@@ -1,6 +1,6 @@
-package com.hifive.chat.repository;
+package com.hifive.common.repository;
 
-import com.hifive.chat.model.BaseModel;
+import com.hifive.common.model.BaseModel;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

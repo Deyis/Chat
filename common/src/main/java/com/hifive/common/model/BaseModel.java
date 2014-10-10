@@ -1,4 +1,4 @@
-package com.hifive.chat.model;
+package com.hifive.common.model;
 
 
 public interface BaseModel {

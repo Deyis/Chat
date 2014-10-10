@@ -1,6 +1,7 @@
 package com.hifive.security.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.hifive.common.model.BaseModel;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.CascadeType;
@@ -24,7 +25,7 @@ import java.util.Set;
         @NamedQuery(name = "User.findByName", query = "select u from User u where u.username = :userName"),
         @NamedQuery(name = "User.findByNameWithAuth", query = "select u from User u left join fetch u.authorities a where u.username = :userName")
 })
-public class User implements UserDetails {
+public class User implements UserDetails, BaseModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

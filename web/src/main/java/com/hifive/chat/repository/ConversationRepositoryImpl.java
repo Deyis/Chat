@@ -2,6 +2,7 @@ package com.hifive.chat.repository;
 
 import com.hifive.chat.model.Conversation;
 import com.hifive.chat.model.Message;
+import com.hifive.common.repository.AbstractRepository;
 import com.hifive.security.model.User;
 import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;

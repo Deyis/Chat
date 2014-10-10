@@ -1,4 +1,4 @@
-package com.hifive.chat.service;
+package com.hifive.common.service;
 
 
 public interface BaseService {
