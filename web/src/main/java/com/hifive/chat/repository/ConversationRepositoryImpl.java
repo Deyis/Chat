@@ -35,8 +35,9 @@ public class ConversationRepositoryImpl extends AbstractRepository<Conversation>
 
     @Override
     public Conversation findFreeConversationAndJoin(String lang, User user) {
-        List<Conversation> res =  em.createNamedQuery("Conversation.findFreeConversation")
-                .setParameter("language", lang).setParameter("currentUserId", user.getId()).getResultList();
+        List<Conversation> res = getListByNamedQuery("Conversation.findFreeConversation",
+                "language", lang,
+                "currentUserId", user.getId());
 
         if (res == null || res.isEmpty()) {
             return null;
@@ -64,8 +65,7 @@ public class ConversationRepositoryImpl extends AbstractRepository<Conversation>
 
     @Override
     public List<Message> getMessagesForConversation(long conversationId, long lastNumber) {
-        return em.createNamedQuery("Message.getMessages")
-                .setParameter("lastMessageNumber", lastNumber).setParameter("conversationId", conversationId).getResultList();
+        return createAndFillQuery("Message.getMessages", "lastMessageNumber", lastNumber, "conversationId", conversationId).getResultList();
     }
 
     @Override
