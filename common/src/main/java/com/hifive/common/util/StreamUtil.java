@@ -10,8 +10,7 @@ import java.util.stream.StreamSupport;
 
 public class StreamUtil {
 
-    public static <K, V> Stream<Pair<K, V>> getPairStream(Object... params) {
-        List<Object> list = Arrays.asList(params);
+    public static <K, V> Stream<Pair<K, V>> getPairStream(List<Object> list) {
         Iterator<Object> it = list.iterator();
         Iterable<Pair<K, V>> i = () -> new Iterator<Pair<K, V>>() {
 
@@ -33,5 +32,9 @@ public class StreamUtil {
         };
 
         return StreamSupport.stream(i.spliterator(), false);
+    }
+
+    public static <K, V> Stream<Pair<K, V>> getPairStream(Object... params) {
+        return getPairStream(Arrays.asList(params));
     }
 }
