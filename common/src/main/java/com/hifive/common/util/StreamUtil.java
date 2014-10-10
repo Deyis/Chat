@@ -11,6 +11,10 @@ import java.util.stream.StreamSupport;
 public class StreamUtil {
 
     public static <K, V> Stream<Pair<K, V>> getPairStream(List<Object> list) {
+        if (list.size() % 2 == 0) {
+            throw new IllegalArgumentException("Length must be even");
+        }
+
         Iterator<Object> it = list.iterator();
         Iterable<Pair<K, V>> i = () -> new Iterator<Pair<K, V>>() {
 
