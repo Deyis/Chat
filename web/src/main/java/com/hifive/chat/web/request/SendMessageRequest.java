@@ -1,5 +1,7 @@
 package com.hifive.chat.web.request;
 
+import com.hifive.common.web.request.BaseRequest;
+
 public class SendMessageRequest implements BaseRequest {
 
     private long conversationId;

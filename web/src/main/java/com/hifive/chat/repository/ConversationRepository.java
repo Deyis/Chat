@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ConversationRepository extends BaseRepository<Conversation> {
 
-    Conversation findById(Long id);
+
     Conversation create(User firstUser, User secondUser, String language);
     Conversation findFreeConversationAndJoin(String lang, User user);
 

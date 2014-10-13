@@ -14,10 +14,16 @@ import java.util.List;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-public class AbstractRepository<M extends BaseModel> implements BaseRepository<M> {
+public abstract class AbstractRepository<M extends BaseModel> implements BaseRepository<M> {
 
     @PersistenceContext
     protected EntityManager em;
+
+    public M findById(Long id) {
+        return em.find(getEntityClass(), id);
+    }
+
+    public abstract Class<M> getEntityClass();
 
     protected M getSingleByNamedQuery(String name, Object... params) {
         return (M) createAndFillQuery(name, params).getSingleResult();

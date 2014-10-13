@@ -5,4 +5,5 @@ import com.hifive.common.model.BaseModel;
 
 public interface BaseRepository<M extends BaseModel> {
 
+    M findById(Long id);
 }

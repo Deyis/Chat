@@ -1,6 +1,8 @@
 package com.hifive.chat.web.request;
 
 
+import com.hifive.common.web.request.BaseRequest;
+
 public class RegisterRequest implements BaseRequest {
 
     private String login;

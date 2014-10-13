@@ -6,7 +6,7 @@ import com.hifive.chat.service.ConversationService;
 import com.hifive.chat.util.Pair;
 import com.hifive.chat.web.request.CreateConversationRequest;
 import com.hifive.chat.web.request.SendMessageRequest;
-import com.hifive.chat.web.response.BaseResponse;
+import com.hifive.common.web.response.BaseResponse;
 import com.hifive.chat.web.response.CreateConversationResponse;
 import com.hifive.chat.web.response.MessagesResponse;
 import com.hifive.chat.web.response.WaitForConversationResponse;

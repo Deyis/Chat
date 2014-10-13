@@ -61,4 +61,8 @@ public class UserRepositoryImpl extends AbstractRepository<User> implements User
         return getListByNamedQuery("Users.findByIds", "ids", ids);
     }
 
+    @Override
+    public Class<User> getEntityClass() {
+        return User.class;
+    }
 }

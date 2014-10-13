@@ -2,6 +2,8 @@ package com.hifive.chat.web.response;
 
 
 import com.hifive.chat.model.Message;
+import com.hifive.common.web.response.AbstractResponse;
+import com.hifive.common.web.response.BaseResponse;
 
 import java.util.List;
 

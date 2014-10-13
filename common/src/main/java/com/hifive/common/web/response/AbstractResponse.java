@@ -1,4 +1,4 @@
-package com.hifive.chat.web.response;
+package com.hifive.common.web.response;
 
 public abstract class AbstractResponse implements BaseResponse {
 

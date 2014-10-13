@@ -36,5 +36,7 @@ CREATE TABLE notifications (
     user_id INTEGER NOT NULL,
     receiver_id INTEGER NOT NULL,
     text VARCHAR(200) NOT NULL,
-    type INTEGER NOT NULL
+    pending BOOLEAN DEFAULT TRUE NOT NULL,
+    accepted BOOLEAN DEFAULT FALSE NOT NULL,
+    type VARCHAR(200) NOT NULL
 );

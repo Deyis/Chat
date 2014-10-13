@@ -1,40 +1,37 @@
 package com.hifive.common.model;
 
-import org.springframework.security.core.userdetails.User;
-
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.Table;
-import java.util.Set;
 
 @Entity
 @Table(name = "notifications")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
 public class Notification extends AbstractModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="user_id")
-    private User from;
-
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "receiver_id")
-    private Set<User> to;
-
     @Column(name = "text")
     private String text;
 
-    @Column(name = "type")
-    private Type type;
+    @Column(name = "pending")
+    private Boolean pending;
+
+    @Column(name = "accepted")
+    private Boolean accepted;
+
+    @Column(name = "type", insertable = false, updatable = false)
+    private String type;
 
     public Long getId() {
         return id;
@@ -44,21 +41,6 @@ public class Notification extends AbstractModel {
         this.id = id;
     }
 
-    public User getFrom() {
-        return from;
-    }
-
-    public void setFrom(User from) {
-        this.from = from;
-    }
-
-    public Set<User> getTo() {
-        return to;
-    }
-
-    public void setTo(Set<User> to) {
-        this.to = to;
-    }
 
     public String getText() {
         return text;
@@ -68,15 +50,61 @@ public class Notification extends AbstractModel {
         this.text = text;
     }
 
-    public Type getType() {
+    public Boolean getPending() {
+        return pending;
+    }
+
+
+    public void setPending(Boolean pending) {
+        this.pending = pending;
+    }
+
+    public String getType() {
         return type;
     }
 
-    public void setType(Type type) {
+    public Type getProperType() {
+        return Type.find(type);
+    }
+
+    public void setType(String type) {
         this.type = type;
     }
 
+    public void setType(Type type) {
+        this.type = type.toString();
+    }
+
+    public Boolean getAccepted() {
+        return accepted;
+    }
+
+    public void setAccepted(Boolean accepted) {
+        this.accepted = accepted;
+    }
+
+
     public enum Type {
-        ADMIN, USER, CUSTOM, FRIENDSHIP, CONVERSATION
+        BASE("BASE"), FRIENDSHIP("FRIENDSHIP");
+
+        private  String value;
+
+        Type(String value){
+            this.value = value;
+        }
+
+        public String toString() {
+            return value;
+        }
+
+        public static Type find(String value) {
+            for (Type type: Type.values()) {
+                if (type.value.equals(value)) {
+                    return type;
+                }
+            }
+            return null;
+        }
+
     }
 }

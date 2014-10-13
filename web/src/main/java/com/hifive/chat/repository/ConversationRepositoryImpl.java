@@ -16,10 +16,6 @@ public class ConversationRepositoryImpl extends AbstractRepository<Conversation>
     @PersistenceContext
     private EntityManager em;
 
-    @Override
-    public Conversation findById(Long id) {
-        return em.find(Conversation.class, id);
-    }
 
     @Override
     public Conversation create(User firstUser, User secondUser, String language) {
@@ -71,5 +67,10 @@ public class ConversationRepositoryImpl extends AbstractRepository<Conversation>
     @Override
     public long getLastMessageNumber(long conversationId) {
         return em.find(Conversation.class, conversationId).getLastMessageNumber();
+    }
+
+    @Override
+    public Class<Conversation> getEntityClass() {
+        return Conversation.class;
     }
 }
