@@ -22,10 +22,24 @@ public class FriendshipRepositoryImpl extends AbstractRepository<Friendship> imp
     }
 
     @Override
+    public void addFiend(User user, User friend) {
+        addFiends(user, Arrays.asList(friend));
+    }
+
+    @Override
     public void removeFriends(User user, List<User> friends) {
         getByUserId(user.getId()).getFriends().removeAll(friends);
         em.flush();
     }
 
+    @Override
+    public void removeFriend(User user, User friend) {
+        removeFriends(user, Arrays.asList(friend));
+    }
 
+
+    @Override
+    public Class<Friendship> getEntityClass() {
+        return Friendship.class;
+    }
 }

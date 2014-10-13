@@ -12,5 +12,9 @@ public interface FriendshipRepository extends BaseRepository<Friendship> {
 
     void addFiends(User user, List<User> friends);
 
+    void addFiend(User user, User friend);
+
     void removeFriends(User user, List<User> friends);
+
+    void removeFriend(User user, User friend);
 }
