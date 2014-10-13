@@ -3,7 +3,7 @@ package com.hifive.chat.controller;
 import com.hifive.chat.model.Conversation;
 import com.hifive.chat.model.Message;
 import com.hifive.chat.service.ConversationService;
-import com.hifive.chat.util.Pair;
+import com.hifive.common.util.Pair;
 import com.hifive.chat.web.request.CreateConversationRequest;
 import com.hifive.chat.web.request.SendMessageRequest;
 import com.hifive.common.web.response.BaseResponse;

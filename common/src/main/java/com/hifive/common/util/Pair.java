@@ -1,4 +1,4 @@
-package com.hifive.chat.util;
+package com.hifive.common.util;
 
 public class Pair<F,S> {
 

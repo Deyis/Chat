@@ -3,16 +3,14 @@ package com.hifive.chat.service;
 import com.hifive.chat.model.Conversation;
 import com.hifive.chat.model.Message;
 import com.hifive.chat.repository.ConversationRepository;
-import com.hifive.chat.util.Pair;
+import com.hifive.common.util.Pair;
 import com.hifive.chat.web.request.CreateConversationRequest;
 import com.hifive.chat.web.request.SendMessageRequest;
 import com.hifive.security.model.User;
-import com.hifive.security.service.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
