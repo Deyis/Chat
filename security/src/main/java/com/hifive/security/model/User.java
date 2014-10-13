@@ -27,7 +27,7 @@ import java.util.Set;
         @NamedQuery(name = "User.findByNameWithAuth", query = "select u from User u left join fetch u.authorities a where u.username = :userName"),
         @NamedQuery(name = "Users.findByIds", query = "select u from User u where u.id in (:ids)")
 })
-public class User extends AbstractModel implements UserDetails, BaseModel {
+public class User extends AbstractModel implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

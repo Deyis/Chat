@@ -28,7 +28,7 @@ import java.util.Set;
                         "and c.secondUser = null " +
                         "and c.firstUser.id != :currentUserId order by c.id asc")
 })
-public class Conversation extends AbstractModel implements BaseModel {
+public class Conversation extends AbstractModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

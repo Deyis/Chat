@@ -7,6 +7,7 @@ import com.hifive.chat.util.Pair;
 import com.hifive.chat.web.request.CreateConversationRequest;
 import com.hifive.chat.web.request.SendMessageRequest;
 import com.hifive.security.model.User;
+import com.hifive.security.service.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,8 @@ public class ConversationServiceImpl implements ConversationService {
 
     @Autowired
     private ConversationRepository conversationRepository;
+
+
 
     @Override
     public Conversation createConversationFromRequest(CreateConversationRequest request, User currentUser) {

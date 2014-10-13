@@ -27,7 +27,7 @@ import java.util.Date;
                         "m.messageNumber > :lastMessageNumber " +
                         "and m.conversation.id = :conversationId order by messageNumber asc ")
 })
-public class Message extends AbstractModel implements BaseModel {
+public class Message extends AbstractModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
