@@ -14,8 +14,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.Set;
 
-//@Entity
-//@Table(name = "notifications")
+@Entity
+@Table(name = "notifications")
 public class Notification extends AbstractModel {
 
     @Id
@@ -27,7 +27,7 @@ public class Notification extends AbstractModel {
     private User from;
 
     @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "friend_id")
+    @JoinColumn(name = "receiver_id")
     private Set<User> to;
 
     @Column(name = "text")
@@ -77,6 +77,6 @@ public class Notification extends AbstractModel {
     }
 
     public enum Type {
-        ADMIN, USER, CUSTOM
+        ADMIN, USER, CUSTOM, FRIENDSHIP, CONVERSATION
     }
 }
