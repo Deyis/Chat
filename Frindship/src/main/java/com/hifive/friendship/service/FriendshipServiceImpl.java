@@ -36,7 +36,7 @@ public class FriendshipServiceImpl implements FriendshipService {
     @Override
     public void addFriends(Long userId, List<Long> userIds) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        friendshipRepository.addFiends(user, userRepository.getUsersByIds(userIds));
+        friendshipRepository.addFriends(user, userRepository.getUsersByIds(userIds));
     }
 
     @Override
@@ -52,7 +52,7 @@ public class FriendshipServiceImpl implements FriendshipService {
             if( !(notification instanceof FriendshipNotification) || !notification.getAccepted()) {
                 return;
             }
-            friendshipRepository.addFiend(((FriendshipNotification)notification).getFrom(), ((FriendshipNotification)notification).getTo());
+            friendshipRepository.addFriend(((FriendshipNotification) notification).getFrom(), ((FriendshipNotification) notification).getTo());
         });
     }
 }
