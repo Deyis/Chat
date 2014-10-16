@@ -33,8 +33,11 @@ public class ConversationController {
     @RequestMapping(value = "/start", method = RequestMethod.POST)
     @ResponseBody
     public BaseResponse create(@RequestBody CreateConversationRequest request) {
+
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
         Conversation conversation = conversationService.createConversationFromRequest(request, currentUser);
+
         if (conversation.getSecondUser() == null) {
             return new WaitForConversationResponse(conversation.getId());
         }
@@ -44,7 +47,9 @@ public class ConversationController {
     @RequestMapping(value = "/check/{conversationId}", method = RequestMethod.GET)
     @ResponseBody
     public BaseResponse check(@PathVariable("conversationId") long conversationId) {
+
         Conversation conversation = conversationService.checkConversation(conversationId);
+
         if (conversation.getSecondUser() == null) {
             return new WaitForConversationResponse(conversation.getId());
         }
@@ -58,12 +63,9 @@ public class ConversationController {
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         conversationService.addMessage(request, currentUser);
-        Pair<List<Message>, Long> result = conversationService.getMessages(request.getConversationId(), request.getLastNumber());
 
-        MessagesResponse response = new MessagesResponse();
-        response.setLastNumber(result.getSecond());
-        response.setNewMessages(result.getFirst());
-        return response;
+        return createMessagesResponse(
+                conversationService.getMessages(request.getConversationId(), request.getLastNumber()));
     }
 
     @RequestMapping(value = "/{conversationId}/leave", method = RequestMethod.GET)
@@ -77,12 +79,13 @@ public class ConversationController {
     public BaseResponse getMessage(@PathVariable("conversationId") long conversationId,
                                    @PathVariable("lastMessageNumber") long lastMessageNumber) {
 
+        return createMessagesResponse(conversationService.getMessages(conversationId, lastMessageNumber));
+    }
 
-        Pair<List<Message>, Long> result = conversationService.getMessages(conversationId, lastMessageNumber);
-
+    private MessagesResponse createMessagesResponse(Pair<List<Message>, Long> messages) {
         MessagesResponse response = new MessagesResponse();
-        response.setLastNumber(result.getSecond());
-        response.setNewMessages(result.getFirst());
+        response.setLastNumber(messages.getSecond());
+        response.setNewMessages(messages.getFirst());
         return response;
     }
 
