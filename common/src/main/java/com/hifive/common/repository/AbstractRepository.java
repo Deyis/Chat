@@ -3,6 +3,7 @@ package com.hifive.common.repository;
 import com.hifive.common.model.BaseModel;
 import com.hifive.common.util.StreamUtil;
 import javafx.util.Pair;
+import sun.plugin2.message.Conversation;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -29,6 +30,15 @@ public abstract class AbstractRepository<M extends BaseModel> implements BaseRep
         model = em.merge(model);
         em.flush();
         return model;
+    }
+
+    public void remove(Long id) {
+        remove(findById(id));
+    }
+
+    private void remove(M model) {
+        em.remove(model);
+        em.flush();
     }
 
     protected M getSingleByNamedQuery(String name, Object... params) {
