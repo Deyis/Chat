@@ -36,13 +36,12 @@ public class ConversationServiceImpl implements ConversationService {
     }
 
     @Override
-    public long addMessage(SendMessageRequest request, User currentUser) {
+    public void addMessage(SendMessageRequest request, User currentUser) {
         Conversation conversation = conversationRepository.findById(request.getConversationId());
         if (conversation == null || !(isUserInConversation(conversation, currentUser))) {
-            return 0;
+            return;
         }
         messageRepository.addMessageToConversation(conversation, request.getMessage(), currentUser);
-        return conversationRepository.getLastMessageNumber(request.getConversationId());
     }
 
     @Override
@@ -51,7 +50,6 @@ public class ConversationServiceImpl implements ConversationService {
         Long newLastNumber = conversationRepository.getLastMessageNumber(conversationId);
         return  new Pair<>(newMessages, newLastNumber);
     }
-
 
     @Override
     public Conversation checkConversation(long conversationId) {

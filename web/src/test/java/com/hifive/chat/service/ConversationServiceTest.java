@@ -74,12 +74,12 @@ public class ConversationServiceTest extends AbstractTest {
         SendMessageRequest sendMessageRequest = createTestSendMessageRequest(conversation.getId());
 
         long initialLastNumber = 0;
-        long lastNumber = conversationService.addMessage(sendMessageRequest, firstUser);
+        conversationService.addMessage(sendMessageRequest, firstUser);
         Pair<List<Message>, Long> result = conversationService.getMessages(conversation.getId(), initialLastNumber);
 
         Assert.assertEquals(1, result.getFirst().size());
-        Assert.assertEquals(Long.valueOf(lastNumber), result.getSecond());
-        Assert.assertEquals(sendMessageRequest.getMessage(), result.getFirst().get((int)lastNumber -1).getMessage());
+        Assert.assertEquals(new Long(1), result.getSecond());
+        Assert.assertEquals(sendMessageRequest.getMessage(), result.getFirst().get(0).getMessage());
 
         conversationRepository.remove(conversation);
     }

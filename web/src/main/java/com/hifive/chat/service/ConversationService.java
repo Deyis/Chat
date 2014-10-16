@@ -15,7 +15,7 @@ import java.util.List;
 public interface ConversationService extends BaseService {
 
     Conversation createConversationFromRequest(CreateConversationRequest request, User currentUser);
-    long addMessage(SendMessageRequest request, User currentUser);
+    void addMessage(SendMessageRequest request, User currentUser);
     Pair<List<Message>, Long> getMessages(long conversationId, long lastNumber);
     Conversation checkConversation(long conversationId);
 }
