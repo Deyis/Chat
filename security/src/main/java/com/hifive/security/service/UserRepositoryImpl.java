@@ -17,13 +17,9 @@ import java.util.List;
 @Transactional
 public class UserRepositoryImpl extends AbstractRepository<User> implements UserRepository {
 
-    @PersistenceContext
-    private EntityManager em;
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return getSingleByNamedQuery("User.findByNameWithAuth", "userName", username);
-//        em.createNamedQuery("User.findByNameWithAuth").setParameter("userName", username).getSingleResult();
     }
 
     @Override
@@ -32,9 +28,7 @@ public class UserRepositoryImpl extends AbstractRepository<User> implements User
         newUser.setUsername(userName);
         newUser.setPassword(password);
         newUser.setEnabled(true);
-        newUser = em.merge(newUser);
-        em.flush();
-        return newUser;
+        return merge(newUser);
     }
 
     @Override
@@ -44,16 +38,14 @@ public class UserRepositoryImpl extends AbstractRepository<User> implements User
 
     @Override
     public User grantRole(Long userId, String authority) {
-        return grantRole(em.find(User.class, userId), authority);
+        return grantRole(findById(userId), authority);
     }
 
     @Override
     public User grantRole(User user, String authority) {
         Authority auth = (Authority) createAndFillQuery("Authority.getByName", "authority", authority).getSingleResult();
-//        em.createNamedQuery("Authority.getByName").setParameter("authority", authority).getSingleResult();
         user.getAuthorities().add(auth);
-        user = em.merge(user);
-        return user;
+        return merge(user);
     }
 
     @Override

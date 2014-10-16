@@ -12,9 +12,6 @@ public interface ConversationRepository extends BaseRepository<Conversation> {
 
     Conversation create(User firstUser, User secondUser, String language);
     Conversation findFreeConversationAndJoin(String lang, User user);
-
-    void addMessageToConversation(Conversation conversation, String message, User user);
-    List<Message> getMessagesForConversation(long conversationId, long lastNumber);
     long getLastMessageNumber(long conversationId);
 
 }

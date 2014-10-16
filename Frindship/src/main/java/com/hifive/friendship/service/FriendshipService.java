@@ -8,6 +8,6 @@ import java.util.List;
 public interface FriendshipService extends BaseService {
 
     Friendship getFriends(Long userId);
-    void addFriends(Long userId, List<Long> userIds);
-    void removeFriends(Long userId, List<Long> userIds);
+    void addFriends(List<Long> userIds);
+    void removeFriends(List<Long> userIds);
 }

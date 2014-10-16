@@ -25,6 +25,12 @@ public abstract class AbstractRepository<M extends BaseModel> implements BaseRep
 
     public abstract Class<M> getEntityClass();
 
+    public M merge(M model) {
+        model = em.merge(model);
+        em.flush();
+        return model;
+    }
+
     protected M getSingleByNamedQuery(String name, Object... params) {
         return (M) createAndFillQuery(name, params).getSingleResult();
     }

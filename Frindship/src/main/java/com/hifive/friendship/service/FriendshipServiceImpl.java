@@ -30,17 +30,17 @@ public class FriendshipServiceImpl implements FriendshipService {
 
     @Override
     public Friendship getFriends(Long userId) {
-        return friendshipRepository.getByUserId(((User)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId());
+        return friendshipRepository.getByUserId(userId);
     }
 
     @Override
-    public void addFriends(Long userId, List<Long> userIds) {
+    public void addFriends(List<Long> userIds) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         friendshipRepository.addFriends(user, userRepository.getUsersByIds(userIds));
     }
 
     @Override
-    public void removeFriends(Long userId, List<Long> userIds) {
+    public void removeFriends(List<Long> userIds) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         friendshipRepository.removeFriends(user, userRepository.getUsersByIds(userIds));
     }

@@ -33,7 +33,6 @@ public class ConversationController {
     @RequestMapping(value = "/start", method = RequestMethod.POST)
     @ResponseBody
     public BaseResponse create(@RequestBody CreateConversationRequest request) {
-        System.out.println(request.getLang());
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Conversation conversation = conversationService.createConversationFromRequest(request, currentUser);
         if (conversation.getSecondUser() == null) {

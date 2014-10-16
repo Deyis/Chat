@@ -13,9 +13,6 @@ import java.util.List;
 @Repository
 public class ConversationRepositoryImpl extends AbstractRepository<Conversation> implements ConversationRepository {
 
-    @PersistenceContext
-    private EntityManager em;
-
 
     @Override
     public Conversation create(User firstUser, User secondUser, String language) {
@@ -24,9 +21,7 @@ public class ConversationRepositoryImpl extends AbstractRepository<Conversation>
         conversation.setSecondUser(secondUser);
         conversation.setLanguage(language);
         conversation.setLastMessageNumber(new Long(0));
-        conversation = em.merge(conversation);
-        em.flush();
-        return conversation;
+        return merge(conversation);
     }
 
     @Override
@@ -45,28 +40,8 @@ public class ConversationRepositoryImpl extends AbstractRepository<Conversation>
     }
 
     @Override
-    public void addMessageToConversation(Conversation conversation, String message, User user) {
-//        Conversation conversation = em.find(Conversation.class, conversationId);
-        Long lastNumber = conversation.getLastMessageNumber() + 1;
-        conversation.setLastMessageNumber(lastNumber);
-        Message newMessage = new Message();
-        newMessage.setUser(user);
-        newMessage.setMessage(message);
-        newMessage.setConversation(conversation);
-        newMessage.setMessageNumber(lastNumber);
-        newMessage.setCreationDate(new Date());
-        em.merge(newMessage);
-        em.flush();
-    }
-
-    @Override
-    public List<Message> getMessagesForConversation(long conversationId, long lastNumber) {
-        return createAndFillQuery("Message.getMessages", "lastMessageNumber", lastNumber, "conversationId", conversationId).getResultList();
-    }
-
-    @Override
     public long getLastMessageNumber(long conversationId) {
-        return em.find(Conversation.class, conversationId).getLastMessageNumber();
+        return findById(conversationId).getLastMessageNumber();
     }
 
     @Override
