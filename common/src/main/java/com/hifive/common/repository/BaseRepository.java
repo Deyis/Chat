@@ -9,7 +9,7 @@ public interface BaseRepository<M extends BaseModel> {
 
     M merge(M model);
 
-//    void remove(M model);
+    void remove(M model);
 
     void remove(Long id);
 }

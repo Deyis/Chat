@@ -28,6 +28,7 @@ public class ConversationServiceTest extends AbstractTest {
     @Autowired
     private ConversationRepository conversationRepository;
 
+
     @Test
     public void createNewConversation() {
         User user = (User) userRepository.loadUserByUsername("admin");
@@ -35,9 +36,8 @@ public class ConversationServiceTest extends AbstractTest {
 
         Assert.assertNull(conversation.getSecondUser());
 
-        conversationRepository.remove(conversation.getId());
+        conversationRepository.remove(conversation);
     }
-
 
     @Test
     public void checkNewConversation() {
@@ -48,7 +48,7 @@ public class ConversationServiceTest extends AbstractTest {
 
         Assert.assertNull(conversation.getSecondUser());
 
-        conversationRepository.remove(conversation.getId());
+        conversationRepository.remove(conversation);
     }
 
     @Test
@@ -61,7 +61,7 @@ public class ConversationServiceTest extends AbstractTest {
         Assert.assertEquals(conversation.getFirstUser().getId(), firstUser.getId());
         Assert.assertEquals(conversation.getSecondUser().getId(), secondUser.getId());
 
-        conversationRepository.remove(conversation.getId());
+        conversationRepository.remove(conversation);
     }
 
     @Test
@@ -71,9 +71,7 @@ public class ConversationServiceTest extends AbstractTest {
 
         Conversation conversation = createConversationForTwoPeople(firstUser, secondUser, "en");
 
-        SendMessageRequest sendMessageRequest = new SendMessageRequest();
-        sendMessageRequest.setConversationId(conversation.getId());
-        sendMessageRequest.setMessage("test");
+        SendMessageRequest sendMessageRequest = createTestSendMessageRequest(conversation.getId());
 
         long initialLastNumber = 0;
         long lastNumber = conversationService.addMessage(sendMessageRequest, firstUser);
@@ -82,8 +80,9 @@ public class ConversationServiceTest extends AbstractTest {
         Assert.assertEquals(Long.valueOf(lastNumber), result.getSecond());
         Assert.assertEquals(result.getFirst().get((int)lastNumber -1).getMessage(), sendMessageRequest.getMessage());
 
-        conversationRepository.remove(conversation.getId());
+        conversationRepository.remove(conversation);
     }
+
 
     private Conversation createConversationForUser(User user, String lang) {
         CreateConversationRequest request = new CreateConversationRequest();
@@ -100,6 +99,13 @@ public class ConversationServiceTest extends AbstractTest {
 
         Assert.assertEquals(createdConversationId, conversation.getId());
         return conversation;
+    }
+
+    private SendMessageRequest createTestSendMessageRequest(Long conversationId) {
+        SendMessageRequest sendMessageRequest = new SendMessageRequest();
+        sendMessageRequest.setConversationId(conversationId);
+        sendMessageRequest.setMessage("test");
+        return sendMessageRequest;
     }
 
 }

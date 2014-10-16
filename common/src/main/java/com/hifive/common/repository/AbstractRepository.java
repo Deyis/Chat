@@ -36,7 +36,7 @@ public abstract class AbstractRepository<M extends BaseModel> implements BaseRep
         remove(findById(id));
     }
 
-    private void remove(M model) {
+    public void remove(M model) {
         em.remove(model);
         em.flush();
     }
