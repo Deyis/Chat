@@ -1,4 +1,4 @@
-package com.hifive.chat;
+package com.hifive.chat.tool;
 
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;

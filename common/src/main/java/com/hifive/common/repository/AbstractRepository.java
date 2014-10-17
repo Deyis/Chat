@@ -2,18 +2,11 @@ package com.hifive.common.repository;
 
 import com.hifive.common.model.BaseModel;
 import com.hifive.common.util.StreamUtil;
-import javafx.util.Pair;
-import sun.plugin2.message.Conversation;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 public abstract class AbstractRepository<M extends BaseModel> implements BaseRepository<M> {
 
@@ -47,6 +40,10 @@ public abstract class AbstractRepository<M extends BaseModel> implements BaseRep
 
     protected List<M> getListByNamedQuery(String name, Object... params) {
         return createAndFillQuery(name, params).getResultList();
+    }
+
+    protected void executeUpdateNamedQuery(String name, Object... params) {
+        createAndFillQuery(name, params).executeUpdate();
     }
 
     protected Query createAndFillQuery(String name, Object... params) {

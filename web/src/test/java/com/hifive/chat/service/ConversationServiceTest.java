@@ -1,9 +1,9 @@
 package com.hifive.chat.service;
 
-import com.hifive.chat.AbstractTest;
 import com.hifive.chat.model.Conversation;
 import com.hifive.chat.model.Message;
 import com.hifive.chat.repository.ConversationRepository;
+import com.hifive.chat.tool.AbstractTest;
 import com.hifive.common.util.Pair;
 import com.hifive.chat.web.request.CreateConversationRequest;
 import com.hifive.chat.web.request.SendMessageRequest;

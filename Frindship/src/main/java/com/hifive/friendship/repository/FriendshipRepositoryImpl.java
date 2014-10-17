@@ -4,6 +4,7 @@ import com.hifive.common.repository.AbstractRepository;
 import com.hifive.friendship.model.Friendship;
 import com.hifive.security.model.User;
 import org.springframework.stereotype.Repository;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -11,13 +12,18 @@ import java.util.List;
 public class FriendshipRepositoryImpl extends AbstractRepository<Friendship> implements FriendshipRepository {
 
     @Override
-    public Friendship getByUserId(Long userId) {
-        return getSingleByNamedQuery("Friendship.findByUserId", "userId", userId);
+    public List<Friendship> getByUserId(Long userId) {
+        return getListByNamedQuery("Friendship.findByUserId", "userId", userId);
     }
 
     @Override
     public void addFriends(User user, List<User> friends) {
-        getByUserId(user.getId()).getFriends().addAll(friends);
+        friends.stream().forEach( friend -> {
+            Friendship newFriendship = new Friendship();
+            newFriendship.setUser(user);
+            newFriendship.setFriend(friend);
+            em.merge(newFriendship);
+        });
         em.flush();
     }
 
@@ -27,14 +33,14 @@ public class FriendshipRepositoryImpl extends AbstractRepository<Friendship> imp
     }
 
     @Override
-    public void removeFriends(User user, List<User> friends) {
-        getByUserId(user.getId()).getFriends().removeAll(friends);
+    public void removeFriends(User user, List<Long> friends) {
+        executeUpdateNamedQuery("Friendship.delete", "userId", user.getId(), "ids", friends);
         em.flush();
     }
 
     @Override
     public void removeFriend(User user, User friend) {
-        removeFriends(user, Arrays.asList(friend));
+        removeFriends(user, Arrays.asList(friend.getId()));
     }
 
 

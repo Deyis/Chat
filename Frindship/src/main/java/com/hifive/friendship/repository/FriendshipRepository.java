@@ -8,13 +8,13 @@ import java.util.List;
 
 public interface FriendshipRepository extends BaseRepository<Friendship> {
 
-    Friendship getByUserId(Long userId);
+    List<Friendship> getByUserId(Long userId);
 
     void addFriends(User user, List<User> friends);
 
     void addFriend(User user, User friend);
 
-    void removeFriends(User user, List<User> friends);
+    void removeFriends(User user, List<Long> friends);
 
     void removeFriend(User user, User friend);
 }

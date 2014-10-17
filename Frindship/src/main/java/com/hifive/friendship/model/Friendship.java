@@ -18,7 +18,10 @@ import java.util.Set;
 @Entity
 @Table(name = "friendship")
 @NamedQueries({
-    @NamedQuery(name = "Friendship.findByUserId", query = "select f from Friendship f where user.id = :userId")
+    @NamedQuery(name = "Friendship.findByUserId",
+            query = "select f from Friendship f where f.user.id = :userId or f.friend.id = :userId"),
+    @NamedQuery(name = "Friendship.delete",
+            query = "delete Friendship where (user.id = :userId and friend.id in (:ids)) or (friend.id = :userId and user.id in (:ids))")
 })
 public class Friendship extends AbstractModel {
 
@@ -30,9 +33,9 @@ public class Friendship extends AbstractModel {
     @JoinColumn(name="user_id")
     private User user;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "friend_id")
-    private Set<User> friends;
+    private User friend;
 
     @Override
     public Long getId() {
@@ -51,11 +54,11 @@ public class Friendship extends AbstractModel {
         this.user = user;
     }
 
-    public Set<User> getFriends() {
-        return friends;
+    public User getFriend() {
+        return friend;
     }
 
-    public void setFriends(Set<User> friends) {
-        this.friends = friends;
+    public void setFriend(User friend) {
+        this.friend = friend;
     }
 }
