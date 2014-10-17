@@ -31,31 +31,13 @@ public class FriendshipServiceTest extends AbstractTest {
         User firstUser = (User) userRepository.loadUserByUsername("admin");
         User secondUser = (User) userRepository.loadUserByUsername("user");
 
-        List<Friendship> friendships = createFriendshipForUsers(firstUser, secondUser);
+        FriendshipTest friendshipTest = new FriendshipTest();
+        friendshipTest.createFriendship(firstUser, secondUser);
 
-        Assert.assertEquals(1, friendships.size());
-        Friendship friendship = friendships.get(0);
+        Assert.assertTrue(friendshipTest.isFriendshipExists(firstUser, secondUser));
+        Assert.assertTrue(friendshipTest.isFriendshipExists(secondUser, firstUser));
 
-        Assert.assertTrue(isFriendshipBetweenUsers(friendship, firstUser, secondUser));
-
-        friendshipRepository.remove(friendship.getId());
-    }
-
-    @Test
-    public void checkIsFriendInAnotherDirection() {
-
-        User firstUser = (User) userRepository.loadUserByUsername("admin");
-        User secondUser = (User) userRepository.loadUserByUsername("user");
-
-        createFriendshipForUsers(firstUser, secondUser);
-
-        List<Friendship> friendships = friendshipRepository.getByUserId(secondUser.getId());
-        Assert.assertEquals(1, friendships.size());
-
-        Friendship friendship = friendships.get(0);
-        Assert.assertTrue(isFriendshipBetweenUsers(friendship, firstUser, secondUser));
-
-        friendshipRepository.remove(friendship);
+        friendshipRepository.remove(friendshipTest.getFriendship().getId());
     }
 
     @Test
@@ -63,12 +45,13 @@ public class FriendshipServiceTest extends AbstractTest {
         User firstUser = (User) userRepository.loadUserByUsername("admin");
         User secondUser = (User) userRepository.loadUserByUsername("user");
 
-        Friendship friendship = createFriendshipForUsers(firstUser, secondUser).get(0);
+        FriendshipTest friendshipTest = new FriendshipTest();
+        friendshipTest.createFriendship(firstUser, secondUser);
 
         List<User> friends= friendshipService.getFriends(secondUser.getId());
         Assert.assertTrue(friends.contains(firstUser));
 
-        friendshipRepository.remove(friendship);
+        friendshipRepository.remove(friendshipTest.getFriendship().getId());
     }
 
     @Test
@@ -76,35 +59,42 @@ public class FriendshipServiceTest extends AbstractTest {
         User firstUser = (User) userRepository.loadUserByUsername("admin");
         User secondUser = (User) userRepository.loadUserByUsername("user");
 
-        createFriendshipForUsers(firstUser, secondUser);
+        FriendshipTest friendshipTest = new FriendshipTest();
+        friendshipTest.createFriendship(firstUser, secondUser);
 
         friendshipService.removeFriends(firstUser, Arrays.asList(secondUser.getId()));
 
-        List<Friendship> friendships = friendshipRepository.getByUserId(firstUser.getId());
-        Assert.assertTrue(friendships.isEmpty());
+        Assert.assertFalse(friendshipTest.isFriendshipExists(firstUser, secondUser));
+        Assert.assertFalse(friendshipTest.isFriendshipExists(secondUser, firstUser));
     }
 
-    @Test
-    public void isFriendsRemovedInSecond() {
-        User firstUser = (User) userRepository.loadUserByUsername("admin");
-        User secondUser = (User) userRepository.loadUserByUsername("user");
+    private class FriendshipTest {
 
-        createFriendshipForUsers(firstUser, secondUser);
+        private Friendship friendship;
 
-        friendshipService.removeFriends(firstUser, Arrays.asList(secondUser.getId()));
+        public void createFriendship(User user1, User user2) {
+            List<Friendship> friendships = createFriendshipForUsers(user1, user2);
+            Assert.assertEquals(1, friendships.size());
+            friendship = friendships.get(0);
+        }
 
-        List<Friendship> friendships = friendshipRepository.getByUserId(secondUser.getId());
-        Assert.assertTrue(friendships.isEmpty());
-    }
+        public boolean isFriendshipExists(User user1, User user2) {
+            List<Friendship> friendships = friendshipRepository.getByUserId(user1.getId());
+            return !friendships.isEmpty() && isFriendshipBetweenUsers(friendships.get(0), user1, user2);
+        }
 
+        public Friendship getFriendship() {
+            return friendship;
+        }
 
-    private List<Friendship> createFriendshipForUsers(User user, User friend) {
-        friendshipService.addFriends(user, Arrays.asList(friend.getId()));
-        return friendshipRepository.getByUserId(user.getId());
-    }
+        private List<Friendship> createFriendshipForUsers(User user, User friend) {
+            friendshipService.addFriends(user, Arrays.asList(friend.getId()));
+            return friendshipRepository.getByUserId(user.getId());
+        }
 
-    private boolean isFriendshipBetweenUsers(Friendship friendship, User user1, User user2) {
-        return friendship.getUser().equals(user1) && friendship.getFriend().equals(user2)
-                || friendship.getUser().equals(user2) && friendship.getFriend().equals(user1);
+        private boolean isFriendshipBetweenUsers(Friendship friendship, User user1, User user2) {
+            return friendship.getUser().equals(user1) && friendship.getFriend().equals(user2)
+                    || friendship.getUser().equals(user2) && friendship.getFriend().equals(user1);
+        }
     }
 }
