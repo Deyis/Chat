@@ -10,7 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Repository("userAuthService")
@@ -45,6 +48,17 @@ public class UserRepositoryImpl extends AbstractRepository<User> implements User
     public User grantRole(User user, String authority) {
         Authority auth = (Authority) createAndFillQuery("Authority.getByName", "authority", authority).getSingleResult();
         user.getAuthorities().add(auth);
+        return merge(user);
+    }
+
+    @Override
+    public User deleteRole(Long userId, String authority) {
+        return deleteRole(findById(userId), authority);
+    }
+
+    @Override
+    public User deleteRole(User user, String authority) {
+        user.setAuthorities(user.getAuthorities().stream().filter(a -> !a.getAuthority().equals(authority)).collect(Collectors.toSet()));
         return merge(user);
     }
 
