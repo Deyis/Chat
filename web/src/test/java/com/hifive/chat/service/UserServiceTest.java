@@ -20,41 +20,42 @@ public class UserServiceTest extends AbstractTest {
     private UserRepository userService;
 
     private final static String ROLE_USER = "ROLE_USER";
+    private final static String ADMIN_USER_NAME = "admin";
 
     @Test
     public void loadUserByName() {
-        User user = (User) userService.loadUserByUsername("admin");
+        User user = (User) userService.loadUserByUsername(ADMIN_USER_NAME);
         Assert.assertNotNull(user);
         Assert.assertEquals("admin", user.getUsername());
     }
 
     @Test
     public void grantRole() {
-        User user = (User) userService.loadUserByUsername("admin");
+        User user = (User) userService.loadUserByUsername(ADMIN_USER_NAME);
         Assert.assertTrue(!isUserHasRole(user, ROLE_USER));
 
         userService.grantRole(user.getId(), ROLE_USER);
 
-        user = (User) userService.loadUserByUsername("admin");
+        user = (User) userService.loadUserByUsername(ADMIN_USER_NAME);
         Assert.assertTrue(isUserHasRole(user, ROLE_USER));
 
         userService.deleteRole(user, ROLE_USER);
 
-        user = (User) userService.loadUserByUsername("admin");
+        user = (User) userService.loadUserByUsername(ADMIN_USER_NAME);
         Assert.assertTrue(!isUserHasRole(user, ROLE_USER));
     }
 
     @Test
     public void deleteRole() {
-        User user = (User) userService.loadUserByUsername("admin");
+        User user = (User) userService.loadUserByUsername(ADMIN_USER_NAME);
         userService.grantRole(user.getId(), ROLE_USER);
 
-        user = (User) userService.loadUserByUsername("admin");
+        user = (User) userService.loadUserByUsername(ADMIN_USER_NAME);
         Assert.assertTrue(isUserHasRole(user, ROLE_USER));
 
         userService.deleteRole(user, ROLE_USER);
 
-        user = (User) userService.loadUserByUsername("admin");
+        user = (User) userService.loadUserByUsername(ADMIN_USER_NAME);
         Assert.assertTrue(!isUserHasRole(user, ROLE_USER));
     }
 
