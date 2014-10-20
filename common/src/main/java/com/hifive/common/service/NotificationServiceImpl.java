@@ -33,6 +33,11 @@ public class NotificationServiceImpl implements NotificationService {
         applyResolvers(Arrays.asList(notification));
     }
 
+    @Override
+    public Notification addNotification(Notification notification) {
+        return notificationRepository.merge(notification);
+    }
+
     private void applyResolvers(List<Notification> notifications) {
         notifications.parallelStream().forEach( n -> {
             resolvers.stream().forEach( r-> r.resolve(n));
